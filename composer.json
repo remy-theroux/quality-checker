@@ -1,0 +1,40 @@
+{
+  "name": "michaelbasford/php-cli",
+  "description": "A PHP cli application template using Symfony's Console Component.",
+  "keywords": [
+    "cli",
+    "console",
+    "command",
+    "framework"
+  ],
+  "version": "1.0.0",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Rémy Théroux",
+      "email": "remy.theroux@iadvize.com"
+    }
+  ],
+  "require": {
+    "symfony/console": "2.6.*@dev",
+    "symfony/yaml": "2.6.x-dev",
+    "monolog/monolog": "~1.11",
+    "pimple/pimple": "~3.0",
+    "symfony/yaml": "^2.7.5",
+    "squizlabs/php_codesniffer": "2.*",
+    "escapestudios/symfony2-coding-standard": "~2.0"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "./vendor/bin/phpcs --config-set installed_paths $PWD/vendor/escapestudios/symfony2-coding-standard"
+    ]
+  },
+  "autoload": {
+    "psr-4": {
+      "QualityChecker\\": [
+        "src"
+      ]
+    }
+  }
+}

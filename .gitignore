@@ -1,0 +1,4 @@
+composer.phar
+vendor/
+logs/*
+!logs/.gitkeep

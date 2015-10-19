@@ -1,0 +1,2 @@
+qualitychecker:
+  config_file_name: 'qualitychecker.yml'
