@@ -4,13 +4,15 @@ namespace QualityChecker\Task;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 /**
  * Class TaskRunner
  *
  * @package QualityChecker\Task
  */
-class TaskRunner {
-
+class TaskRunner
+{
     /** @var TaskInterface[] */
     private $tasks;
 
@@ -33,22 +35,30 @@ class TaskRunner {
         return $this;
     }
 
-    public function run()
+    /**
+     * @todo Get BinDir et $output in a better way (dependency injection)
+     *
+     * @param OutputInterface $output Output
+     * @param string          $binDir Binary directory
+     *
+     * @throws \RuntimeException
+     */
+    public function run(OutputInterface $output, $binDir)
     {
         $failures = false;
         $messages = [];
 
         foreach ($this->tasks as $task) {
             try {
-                $task->run($config);
+                $task->run($output, $binDir);
             } catch (\RuntimeException $e) {
-                $failures = true;
+                $failures   = true;
                 $messages[] = $e->getMessage();
             }
         }
 
         if ($failures) {
-            throw new FailureException(implode(PHP_EOL, $messages));
+            throw new \RuntimeException(implode(PHP_EOL, $messages));
         }
     }
 }

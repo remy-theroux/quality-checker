@@ -7,6 +7,7 @@ namespace QualityChecker\Exception;
  *
  * @package QualityChecker\Exception
  */
-class ConfigException extends \Exception {
+class ConfigException extends \Exception
+{
 
 }

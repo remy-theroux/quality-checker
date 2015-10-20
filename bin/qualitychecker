@@ -7,15 +7,26 @@ use Symfony\Component\Console\Application;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-define('APP_DIR', __DIR__ . '/..');
-define('CONFIG', APP_DIR . '/config/config.yml');
-$application = new Application();
+define('APP_DIR', __DIR__ . '/../');
+define('CONFIG_PATH', APP_DIR . 'config/config.yml');
 
+$application = new Application();
+// @todo Add application version get from composer.json
+$application->setName('php-cli quality-checker');
+
+// @todo Let users override config in the custom configuration file
 try {
-    $container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
-    $loader = new \Symfony\Component\DependencyInjection\Loader\YamlFileLoader($container, new \Symfony\Component\Config\FileLocator(__DIR__ . '/../config'));
-    $loader->load('parameters.yml');
-    $container->compile();
+    $config = \Symfony\Component\Yaml\Yaml::parse(CONFIG_PATH);
+    if ($config === CONFIG_PATH) {
+        throw new ErrorException('The configuration file was not found. Aborting.');
+    }
+
+    $config = new \Doctrine\Common\Collections\ArrayCollection($config);
+
+    $logDir = APP_DIR . $config->get('log_dir');
+    if (!is_writable($logDir)) {
+        throw new ErrorException('The logs directory is not writable. Aborting.');
+    }
 } catch (Exception $exception) {
     $application->renderException(
         $exception,
@@ -24,19 +35,14 @@ try {
     exit(-1);
 }
 
-// @todo Add absolute log dir in parameters
-if (!is_writable(APP_DIR . $container->getParameter('log_dir'))) {
-    throw new ErrorException('The logs directory is not writable. Aborting.');
-}
-
-$logPath = APP_DIR . $container->getParameter('log');
-
 // Create logger
-$logger = new Logger('app');
+$logPath = $logDir . $config->get('log_file');
+
+$logger  = new Logger('app');
 $logger->pushHandler(new StreamHandler($logPath));
 
 $application->add(
-    new QualityChecker\Command\StartCommand($container, $logger)
+    new QualityChecker\Command\StartCommand($config, $logger)
 );
 
 $application->run();

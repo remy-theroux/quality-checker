@@ -14,13 +14,14 @@ final class ContainerFactory
      *
      * @return ContainerBuilder
      */
-    public static function buildFromConfiguration($configFilePath)
+    public function buildFromConfiguration($configFilePath)
     {
         $container = new ContainerBuilder();
         $container->addCompilerPass(new QualityCheckerCompilerPass());
 
         // Load basic service file + custom user configuration
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../../resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
+        //$loader->load('parameters.yml');
         $loader->load('services.yml');
 
         // Load qualitychecker.yml

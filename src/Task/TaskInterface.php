@@ -2,6 +2,8 @@
 
 namespace QualityChecker\Task;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 /**
  * Interface TaskInterface
  *
@@ -20,11 +22,12 @@ interface TaskInterface
     public function getDefaultConfiguration();
 
     /**
-     *
-     * @param array $config
+     * @param OutputInterface $output Output
+     * @param string $binDir Binary directory
      *
      * @return void
+     *
      * @throws \RuntimeException
      */
-    public function run(array $config);
+    public function run(OutputInterface $output, $binDir);
 }

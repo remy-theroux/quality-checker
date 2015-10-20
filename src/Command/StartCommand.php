@@ -2,18 +2,15 @@
 
 namespace QualityChecker\Command;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Monolog\Logger;
-use QualityChecker\Exception\ConfigException;
+use QualityChecker\Configuration\ContainerFactory;
 use QualityChecker\Task\TaskRunner;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Yaml\Parser;
-use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
  * Class CheckQualityCommand
@@ -23,9 +20,9 @@ use Symfony\Component\Yaml\Exception\ParseException;
 class StartCommand extends Command
 {
     /**
-     * @var ContainerBuilder
+     * @var ArrayCollection
      */
-    private $container;
+    private $config;
 
     /**
      * @var Logger
@@ -33,14 +30,14 @@ class StartCommand extends Command
     private $logger;
 
     /**
-     * @param ContainerBuilder $container Container builder
-     * @param Logger           $logger    Logger
+     * @param ArrayCollection $config Application configuration
+     * @param Logger          $logger Logger
      */
-    public function __construct(ContainerBuilder $container, Logger $logger)
+    public function __construct(ArrayCollection $config, Logger $logger)
     {
         parent::__construct();
-        $this->container = $container;
-        $this->logger    = $logger;
+        $this->config = $config;
+        $this->logger = $logger;
     }
 
     /**
@@ -65,40 +62,26 @@ class StartCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        // Check file existence
-        $configFileName = $this->container->getParameter('config_file_name');
-        $configFilePath = getcwd() . '/' . $configFileName;
-
-        if (!is_readable($configFilePath)) {
-            $message = sprintf('Can\'t find or read config file: %s', $configFilePath);
-            throw new \Exception($message);
-        }
-
-        // Parse yaml config file
-        $yaml = new Parser();
-
-        // Enrich exception message
-        try {
-            $value = $yaml->parse(file_get_contents($configFilePath));
-        } catch (ParseException $e) {
-            $message = sprintf('Unable to parse the YAML file : %s. Error: %s', $configFilePath, $e->getMessage());
-            throw new ConfigException($message);
-        }
-
-        // Launch each configured task
-        $taskRunner = new TaskRunner();
-
-
-        $process = new Process('ls -lsa');
-
-        try {
-            $process->mustRun();
-
-            echo $process->getOutput();
-        } catch (ProcessFailedException $e) {
-            echo $e->getMessage();
-        }
+        $container = $this->getContainer();
+        /** @var TaskRunner $taskRunner */
+        $taskRunner = $container->get('task_runner');
+        $taskRunner->run(
+            $output,
+            $this->config->get('bin_dir')
+        );
     }
 
-    public function get
+    /**
+     * Get container
+     * @todo Move this in abstract command class to let all commands use this
+     *
+     * @return ContainerBuilder
+     */
+    public function getContainer()
+    {
+        $containerFactory = new ContainerFactory();
+        $configFilePath   = getcwd() . DIRECTORY_SEPARATOR . $this->config->get('config_file');
+
+        return $containerFactory->buildFromConfiguration($configFilePath);
+    }
 }

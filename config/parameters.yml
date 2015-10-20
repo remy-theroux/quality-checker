@@ -1,7 +1,0 @@
-parameters:
-  app_name: 'php-cli quality-checker'
-  app_version: 0.1.0
-  config_file_name: 'qualitychecker.yml'
-  debug: false
-  log_dir: /logs
-  log: %log_dir%/php-quality-checker.log
