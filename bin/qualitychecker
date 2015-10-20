@@ -4,29 +4,18 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
-use Symfony\Component\Yaml\Yaml;
-use Pimple\Container;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-define('APP_NAME',    'php-cli php-quality-checker');
-define('APP_VERSION', '0.0.1');
-define('DEBUG',       false);
-define('CONFIG',      __DIR__ . '/../config/config.yml');
-define('LOG_DIR',     __DIR__ . '/../logs/');
-define('LOG',         LOG_DIR . 'php-quality-checker.log');
-
-$application = new Application(APP_NAME, APP_VERSION);
+define('APP_DIR', __DIR__ . '/..');
+define('CONFIG', APP_DIR . '/config/config.yml');
+$application = new Application();
 
 try {
-    $config = Yaml::parse(CONFIG);
-
-    if ($config === CONFIG)
-        throw new ErrorException('The configuration file was not found. Aborting.');
-
-    if (!is_writable(LOG_DIR))
-        throw new ErrorException('The logs directory is not writable. Aborting.');
-
+    $container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
+    $loader = new \Symfony\Component\DependencyInjection\Loader\YamlFileLoader($container, new \Symfony\Component\Config\FileLocator(__DIR__ . '/../config'));
+    $loader->load('parameters.yml');
+    $container->compile();
 } catch (Exception $exception) {
     $application->renderException(
         $exception,
@@ -35,18 +24,19 @@ try {
     exit(-1);
 }
 
-$container = new Container();
+// @todo Add absolute log dir in parameters
+if (!is_writable(APP_DIR . $container->getParameter('log_dir'))) {
+    throw new ErrorException('The logs directory is not writable. Aborting.');
+}
 
-$container['config'] = $config === null ? array() : $config;
-$container['logger'] = function() {
-    $logger = new Logger('app');
-    $logger->pushHandler(new StreamHandler(LOG));
+$logPath = APP_DIR . $container->getParameter('log');
 
-    return $logger;
-};
+// Create logger
+$logger = new Logger('app');
+$logger->pushHandler(new StreamHandler($logPath));
 
 $application->add(
-    new QualityChecker\Command\StartCommand($container)
+    new QualityChecker\Command\StartCommand($container, $logger)
 );
 
 $application->run();

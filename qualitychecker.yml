@@ -1,5 +1,11 @@
-qualitychecker:
-  enable: ['phpcs', 'phpmd']
-phpcs:
+parameters:
+  tasks: ['phpcs', 'phpmd']
 
-phpmd:
+#PHPCS configuration
+phpcs:
+#  standard: './vendor/iadvize/php-convention/phpcs/Iadvize'
+  standard: 'PSR2'
+  paths: ['./']
+
+#PHPMD configuration
+phpmd: ~

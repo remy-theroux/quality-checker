@@ -2,14 +2,18 @@
 
 namespace QualityChecker\Command;
 
+use Monolog\Logger;
 use QualityChecker\Exception\ConfigException;
+use QualityChecker\Task\TaskRunner;
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Exception\ParseException;
-
-use Pimple\Container;
 
 /**
  * Class CheckQualityCommand
@@ -19,17 +23,24 @@ use Pimple\Container;
 class StartCommand extends Command
 {
     /**
-     * @var Container
+     * @var ContainerBuilder
      */
     private $container;
 
     /**
-     * @param Container $container
+     * @var Logger
      */
-    public function __construct(Container $container)
+    private $logger;
+
+    /**
+     * @param ContainerBuilder $container Container builder
+     * @param Logger           $logger    Logger
+     */
+    public function __construct(ContainerBuilder $container, Logger $logger)
     {
         parent::__construct();
         $this->container = $container;
+        $this->logger    = $logger;
     }
 
     /**
@@ -39,7 +50,7 @@ class StartCommand extends Command
     {
         $this
             ->setName('start')
-            ->setDescription('Start all configured quality jobs, ready to write good code');
+            ->setDescription('Start all configured quality tasks, ready to write good code');
     }
 
     /**
@@ -55,16 +66,11 @@ class StartCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         // Check file existence
-        $config = $this->container->offsetGet('config');
-        if (!isset($config['qualitychecker']['config_file_name'])) {
-            throw new \Exception('Can\'t find config entry qualitychecker.config_file_name');
-        }
+        $configFileName = $this->container->getParameter('config_file_name');
+        $configFilePath = getcwd() . '/' . $configFileName;
 
-        $currentPath = getcwd();
-        $filePath = $currentPath . '/' . $config['qualitychecker']['config_file_name'];
-
-        if (!is_readable($filePath)) {
-            $message = sprintf('Can\'t find or read config file: %s', $filePath);
+        if (!is_readable($configFilePath)) {
+            $message = sprintf('Can\'t find or read config file: %s', $configFilePath);
             throw new \Exception($message);
         }
 
@@ -73,13 +79,26 @@ class StartCommand extends Command
 
         // Enrich exception message
         try {
-            $value = $yaml->parse(file_get_contents($filePath));
+            $value = $yaml->parse(file_get_contents($configFilePath));
         } catch (ParseException $e) {
-            $message = sprintf('Unable to parse the YAML file :  %s. Error: %s', $filePath, $e->getMessage());
+            $message = sprintf('Unable to parse the YAML file : %s. Error: %s', $configFilePath, $e->getMessage());
             throw new ConfigException($message);
         }
 
-        // Launch each configured job
+        // Launch each configured task
+        $taskRunner = new TaskRunner();
 
+
+        $process = new Process('ls -lsa');
+
+        try {
+            $process->mustRun();
+
+            echo $process->getOutput();
+        } catch (ProcessFailedException $e) {
+            echo $e->getMessage();
+        }
     }
+
+    public function get
 }

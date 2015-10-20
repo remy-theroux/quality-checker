@@ -1,0 +1,10 @@
+services:
+    task_runner:
+        class: QualityChecker\Task\TaskRunner
+
+    task.phpcs:
+        class: QualityChecker\Task\Phpcs
+        arguments:
+          - "@=parameter('phpcs') ? parameter('phpcs') : []"
+        tags:
+          - {name: task, config: phpcs}
