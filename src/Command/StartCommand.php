@@ -56,7 +56,7 @@ class StartCommand extends Command
      * @param InputInterface  $input  Input
      * @param OutputInterface $output Output
      *
-     * @return void
+     * @return int
      *
      * @throws \Exception
      */
@@ -67,8 +67,7 @@ class StartCommand extends Command
         $taskRunner    = $container->get('task_runner');
         $isSuccessfull = $taskRunner->run($output, $this->appConfig);
 
-        // @todo manage exit code with event listener
-        exit($isSuccessfull ? 0 : -1);
+        return ($isSuccessfull ? 0 : -1);
     }
 
     /**

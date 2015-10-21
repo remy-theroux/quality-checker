@@ -8,17 +8,22 @@ function includeIfExists($file)
     }
 }
 
-if ((!$loader = includeIfExists(__DIR__.'/../vendor/autoload.php')) && (!$loader = includeIfExists(__DIR__.'/../../../autoload.php'))) {
+if ((!$loader = includeIfExists(__DIR__ . '/../vendor/autoload.php')) && (!$loader = includeIfExists(__DIR__ . '/../../../autoload.php'))) {
     fwrite(
         STDERR,
-        'You must set up the project dependencies, run the following commands:'.PHP_EOL.
-        'curl -s http://getcomposer.org/installer | php'.PHP_EOL.
-        'php composer.phar install'.PHP_EOL
+        'You must set up the project dependencies, run the following commands:' . PHP_EOL .
+        'curl -s http://getcomposer.org/installer | php' . PHP_EOL .
+        'php composer.phar install' . PHP_EOL
     );
     exit(1);
 }
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Yaml\Yaml;
+
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -26,17 +31,18 @@ define('APP_DIR', __DIR__ . '/../');
 define('CONFIG_PATH', APP_DIR . 'config/config.yml');
 
 $application = new Application();
+
 // @todo Add application version get from composer.json
 $application->setName('php-cli quality-checker');
 
 // @todo Let users override config in the custom configuration file
 try {
-    $config = \Symfony\Component\Yaml\Yaml::parse(CONFIG_PATH);
+    $config = Yaml::parse(CONFIG_PATH);
     if ($config === CONFIG_PATH) {
         throw new ErrorException('The configuration file was not found. Aborting.');
     }
 
-    $config = new \Doctrine\Common\Collections\ArrayCollection($config);
+    $config = new ArrayCollection($config);
 
     $logDir = APP_DIR . $config->get('log_dir');
     if (!is_writable($logDir)) {
@@ -45,7 +51,7 @@ try {
 } catch (Exception $exception) {
     $application->renderException(
         $exception,
-        new Symfony\Component\Console\Output\ConsoleOutput()
+        new ConsoleOutput()
     );
     exit(-1);
 }
@@ -53,7 +59,7 @@ try {
 // Create logger
 $logPath = $logDir . $config->get('log_file');
 
-$logger  = new Logger('app');
+$logger = new Logger('app');
 $logger->pushHandler(new StreamHandler($logPath));
 
 $application->add(
