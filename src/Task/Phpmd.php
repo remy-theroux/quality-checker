@@ -5,14 +5,14 @@ namespace QualityChecker\Task;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class Phpcs
+ * Class Phpmd
  *
  * @package QualityChecker\Task
  */
-class Phpcs extends AbstractTask
+class Phpmd extends AbstractTask
 {
     /** @const string */
-    const COMMAND_NAME = 'phpcs';
+    const COMMAND_NAME = 'phpmd';
 
     /**
      * Run task

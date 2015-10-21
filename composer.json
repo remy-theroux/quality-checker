@@ -1,11 +1,12 @@
 {
-  "name": "michaelbasford/php-cli",
-  "description": "A PHP cli application template using Symfony's Console Component.",
+  "name": "remy-theroux/quality-checker",
+  "description": "Gonna check quality of your PHP project",
   "keywords": [
     "cli",
     "console",
     "command",
-    "framework"
+    "quality",
+    "php"
   ],
   "version": "0.1.0",
   "type": "project",
