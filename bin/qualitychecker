@@ -20,20 +20,20 @@ if ((!$loader = includeIfExists(__DIR__ . '/../vendor/autoload.php')) && (!$load
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use QualityChecker\Configuration\ContainerFactory;
+
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Yaml\Yaml;
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-
 define('APP_DIR', __DIR__ . '/../');
-define('CONFIG_PATH', APP_DIR . 'config/config.yml');
-
-$application = new Application();
+define('CONFIG_PATH', APP_DIR . 'config/parameters.yml');
 
 // @todo Add application version get from composer.json
+$application = new Application();
 $application->setName('php-cli quality-checker');
+
+$container = ContainerFactory::compileConfiguration();
 
 // @todo Let users override config in the custom configuration file
 try {
@@ -44,7 +44,7 @@ try {
 
     $config = new ArrayCollection($config);
 
-    $logDir = APP_DIR . $config->get('log_dir');
+    $logDir = APP_DIR . $config->get('parameters')['log_dir'];
     if (!is_writable($logDir)) {
         throw new ErrorException('The logs directory is not writable. Aborting.');
     }
@@ -56,14 +56,15 @@ try {
     exit(-1);
 }
 
-// Create logger
-$logPath = $logDir . $config->get('log_file');
+/** @var \Monolog\Logger $logger */
+$logger = $container->get('logger');
 
-$logger = new Logger('app');
-$logger->pushHandler(new StreamHandler($logPath));
+/** @var \QualityChecker\Task\TaskRunner $taskRunner */
+$taskRunner = $container->get('task_runner');
+
 
 $application->add(
-    new QualityChecker\Command\StartCommand($config, $logger)
+    new QualityChecker\Command\StartCommand($taskRunner, $logger)
 );
 
 $application->run();

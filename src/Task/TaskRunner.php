@@ -36,21 +36,20 @@ class TaskRunner
     }
 
     /**
-     * @todo Get BinDir et $output in a better way (dependency injection)
+     * Run all configured tasks
      *
      * @param OutputInterface $output    Output
-     * @param ArrayCollection $appConfig Application configuration
      *
      * @return boolean
      *
      * @throws \RuntimeException
      */
-    public function run(OutputInterface $output, ArrayCollection $appConfig)
+    public function run(OutputInterface $output)
     {
         $success = false;
 
         foreach ($this->tasks as $task) {
-            $success &= $task->run($output, $appConfig);
+            $success &= $task->run($output);
         }
 
         return $success;

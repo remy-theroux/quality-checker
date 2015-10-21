@@ -2,7 +2,6 @@
 
 namespace QualityChecker\Task;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
