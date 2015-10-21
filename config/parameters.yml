@@ -1,0 +1,5 @@
+parameters:
+  config_file: qualitychecker.yml
+  bin_dir: ./vendor/bin
+  log_dir: logs/
+  log_file: php-quality-checker.log

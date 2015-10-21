@@ -1,5 +1,8 @@
 parameters:
   tasks: [phpcs, phpmd]
+  bin_dir: ./vendor/bin
+  log_dir: logs/
+  log_file: php-quality-checker.log
 
   # PHPCS configuration
   phpcs:

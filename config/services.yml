@@ -6,6 +6,7 @@ services:
     class: QualityChecker\Task\Phpcs
     arguments:
       - "@=parameter('phpcs') ? parameter('phpcs') : []"
+      - %bin_dir%
     tags:
       - {name: task}
 
@@ -13,5 +14,6 @@ services:
     class: QualityChecker\Task\Phpmd
     arguments:
       - "@=parameter('phpmd') ? parameter('phpmd') : []"
+      - %bin_dir%
     tags:
       - {name: task}
