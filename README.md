@@ -21,11 +21,11 @@ $ mv qualitychecker.yml.dist qualitychecker.yml
 
 Full configuration of tasks is available here
 
-```
+```YML
 parameters:
   tasks: [phpcs, phpmd]
 
-    #PHPCS configuration
+  # PHPCS configuration
   phpcs:
     # Could be PEAR, PHPCS, PSR1, PSR2, Squiz, Zend or a directory with a ruleset './vendor/iadvize/php-convention/phpcs/Iadvize'
     standard: PSR2
@@ -36,7 +36,7 @@ parameters:
     sniffs: []
     timeout: 180
 
-  #PHPMD configuration
+  # PHPMD configuration
   phpmd:
     paths: [./src/]
     format: text
