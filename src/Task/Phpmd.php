@@ -2,6 +2,8 @@
 
 namespace QualityChecker\Task;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -17,15 +19,17 @@ class Phpmd extends AbstractTask
     /**
      * Run task
      *
-     * @param string $binDir Binary directory
+     * @inheritdoc
      */
-    public function run(OutputInterface $output, $binDir)
+    public function run(OutputInterface $output, ArrayCollection $appConfig)
     {
-        $output->writeln('Running PHPCS...');
+        $output->writeln('[PHPMD] Running...');
 
         $config = $this->getConfiguration();
 
-        $this->processBuilder->setPrefix($binDir . DIRECTORY_SEPARATOR . self::COMMAND_NAME);
+        $commandPath = $this->getCommandPath(self::COMMAND_NAME, $appConfig->get('bin_dir'));
+        $this->processBuilder->setPrefix($commandPath);
+
         $this->processBuilder->setArguments([
             '--standard=' . $config['standard'],
         ]);
@@ -59,9 +63,11 @@ class Phpmd extends AbstractTask
 
         if (!$process->isSuccessful()) {
             $output->write($process->getOutput());
-        } else {
-            $output->writeln(['PHPCS successfull', '', '']);
+            $output->writeln(['[PHPMD] <fg=red>Failed</fg=red>', '']);
         }
+
+        $output->writeln(['[PHPMD] <fg=green>Success</fg=green>', '']);
+        return true;
     }
 
     /**
@@ -69,12 +75,6 @@ class Phpmd extends AbstractTask
      */
     public function getDefaultConfiguration()
     {
-        return [
-            'standard'        => 'PSR2',
-            'show_warnings'   => true,
-            'tab_width'       => null,
-            'ignore_patterns' => [],
-            'sniffs'          => [],
-        ];
+        return [];
     }
 }

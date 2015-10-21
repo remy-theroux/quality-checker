@@ -20,6 +20,8 @@ class Phpcs extends AbstractTask
      *
      * @param OutputInterface $output    Output
      * @param ArrayCollection $appConfig Application configuration
+     *
+     * @return boolean
      */
     public function run(OutputInterface $output, $appConfig)
     {
@@ -64,9 +66,12 @@ class Phpcs extends AbstractTask
         if (!$process->isSuccessful()) {
             $output->write($process->getOutput());
             $output->writeln(['[PHPCS] <fg=red>Failed</fg=red>', '']);
-        } else {
-            $output->writeln(['[PHPCS] <fg=green>Successfull</fg=green>', '']);
+
+            return false;
         }
+
+        $output->writeln(['[PHPCS] <fg=green>Success</fg=green>', '']);
+        return true;
     }
 
     /**

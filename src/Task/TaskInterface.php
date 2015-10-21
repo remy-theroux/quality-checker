@@ -27,7 +27,7 @@ interface TaskInterface
      * @param OutputInterface $output    Output
      * @param ArrayCollection $appConfig Application config
      *
-     * @return void
+     * @return boolean
      *
      * @throws \RuntimeException
      */
