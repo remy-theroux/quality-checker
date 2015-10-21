@@ -7,21 +7,22 @@ Supported tools are :
 - PHP mess detector (PHPMD)
 - ... many more are coming
 
-Installing & running application
+Installing
 --
 ```
 $ composer require remy-theroux/quality-checker
 ```
 
-Configuring application
+Configuring
 --
 ```
 $ mv qualitychecker.yml.dist qualitychecker.yml
 ```
 
-Running your application
+Running
 --
 Start all configured tasks
+
 ```
 $ ./vendor/bin/qualitchecker start
 ```

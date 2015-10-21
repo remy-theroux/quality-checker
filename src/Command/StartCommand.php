@@ -64,8 +64,11 @@ class StartCommand extends Command
     {
         $container = $this->getContainer();
         /** @var TaskRunner $taskRunner */
-        $taskRunner = $container->get('task_runner');
-        $taskRunner->run($output, $this->appConfig);
+        $taskRunner    = $container->get('task_runner');
+        $isSuccessfull = $taskRunner->run($output, $this->appConfig);
+
+        // @todo manage exit code with event listener
+        exit($isSuccessfull ? 0 : -1);
     }
 
     /**

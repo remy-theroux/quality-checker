@@ -41,24 +41,18 @@ class TaskRunner
      * @param OutputInterface $output    Output
      * @param ArrayCollection $appConfig Application configuration
      *
+     * @return boolean
+     *
      * @throws \RuntimeException
      */
     public function run(OutputInterface $output, ArrayCollection $appConfig)
     {
-        $failures = false;
-        $messages = [];
+        $success = false;
 
         foreach ($this->tasks as $task) {
-            try {
-                $task->run($output, $appConfig);
-            } catch (\RuntimeException $e) {
-                $failures   = true;
-                $messages[] = $e->getMessage();
-            }
+            $success &= $task->run($output, $appConfig);
         }
 
-        if ($failures) {
-            throw new \RuntimeException(implode(PHP_EOL, $messages));
-        }
+        return $success;
     }
 }
