@@ -1,63 +1,28 @@
-php-cli
-======
+Quality checker
+===============
 
-A skeleton CLI application template using Symfony's [Console](https://github.com/symfony/Console) component.
+A PHP command line quality tools. It lets you check your code quality with a single yaml file.
+Supported tools are :
+- PHP code sniffer (PHPCS)
+- PHP mess detector (PHPMD)
+- ... many more are coming
 
-Create a new application
+Installing & running application
 --
 ```
-$ composer create-project michaelbasford/php-cli:dev new-project-dir/
-$ cd new-project-dir/
+$ composer require remy-theroux/quality-checker
+```
+
+Configuring application
+--
+```
+$ mv qualitychecker.yml.dist qualitychecker.yml
 ```
 
 Running your application
 --
+Start all configured tasks
 ```
-$ chmod +x bin/application
-$ bin/application
-php-cli application version 0.0.1
-
-Usage:
- [options] command [arguments]
-
-Options:
- --help (-h)           Display this help message.
- --quiet (-q)          Do not output any message.
- --verbose (-v|vv|vvv) Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug.
- --version (-V)        Display this application version.
- --ansi                Force ANSI output.
- --no-ansi             Disable ANSI output.
- --no-interaction (-n) Do not ask any interactive question.
-
-Available commands:
- help              Displays help for a command
- list              Lists commands
-example
- example:command   An example command.
+$ ./vendor/bin/qualitchecker start
 ```
 
-Example Command
-```
-$ bin/application example:command
-Hello, World!
-```
-
-Remove Example
---
-Remove the following lines from `bin/application`
-
-```
-$application->add(
-    new Example\ExampleCommand($container)
-);
-```
-
-Then remove the folder
-`$ rm -r src/Example`
-
-Included Components
----
-* [Console](https://github.com/symfony/Console)
-* [Pimple](http://pimple.sensiolabs.org)
-* [Monolog](https://github.com/Seldaek/monolog)
-* [YAML Parser](https://github.com/symfony/Yaml)
