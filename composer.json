@@ -31,7 +31,7 @@
     "symfony/expression-language": "^2.7"
   },
   "bin": [
-    "bin/quality-checker"
+    "bin/qualitychecker"
   ],
   "scripts": {
     "post-install-cmd": [
