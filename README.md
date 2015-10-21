@@ -9,19 +9,19 @@ Supported tools are :
 
 Installing
 --
-```
+```sh
 $ composer require remy-theroux/quality-checker
 ```
 
 Configuring
 --
-```
+```sh
 $ mv qualitychecker.yml.dist qualitychecker.yml
 ```
 
 Full configuration of tasks is available here
 
-```YML
+```yml
 parameters:
   tasks: [phpcs, phpmd]
 
@@ -50,6 +50,6 @@ Running
 --
 Start all configured tasks
 
-```
+```sh
 $ ./vendor/bin/qualitchecker start
 ```
