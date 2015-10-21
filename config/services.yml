@@ -8,3 +8,10 @@ services:
       - "@=parameter('phpcs') ? parameter('phpcs') : []"
     tags:
       - {name: task}
+
+  phpmd:
+    class: QualityChecker\Task\Phpmd
+    arguments:
+      - "@=parameter('phpmd') ? parameter('phpmd') : []"
+    tags:
+      - {name: task}
