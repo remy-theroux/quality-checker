@@ -51,5 +51,6 @@ Running
 Start all configured tasks
 
 ```sh
-$ ./vendor/bin/qualitchecker start
+$ ./vendor/bin/qualitychecker start
 ```
+
