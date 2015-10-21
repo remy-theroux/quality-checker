@@ -45,7 +45,6 @@ parameters:
     timeout: 180
 ```
 
-
 Running
 --
 Start all configured tasks, a status code 0 is returned if all tasks are ok else -1 is returned
@@ -54,3 +53,12 @@ Start all configured tasks, a status code 0 is returned if all tasks are ok else
 $ ./vendor/bin/qualitychecker start
 ```
 
+TODO
+--
+
+
+* Refactor Task dependencies
+* Add logs during execution
+* Add better parameters check support
+* Add PHPUNIT support
+* Add BEHAT support
