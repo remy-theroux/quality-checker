@@ -58,7 +58,7 @@ TODO
 
 
 * Refactor Task dependencies
+* Add better parameters dependencies & type check support
 * Add logs during execution
-* Add better parameters check support
 * Add PHPUNIT support
 * Add BEHAT support
