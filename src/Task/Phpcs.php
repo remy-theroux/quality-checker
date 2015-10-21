@@ -23,7 +23,7 @@ class Phpcs extends AbstractTask
      */
     public function run(OutputInterface $output, $appConfig)
     {
-        $output->writeln('Running PHPCS...');
+        $output->writeln('[PHPCS] Running...');
 
         $config = $this->getConfiguration();
 
@@ -63,8 +63,9 @@ class Phpcs extends AbstractTask
 
         if (!$process->isSuccessful()) {
             $output->write($process->getOutput());
+            $output->writeln(['[PHPCS] <fg=red>Failed</fg=red>', '']);
         } else {
-            $output->writeln(['PHPCS successfull', '']);
+            $output->writeln(['[PHPCS] <fg=green>Successfull</fg=green>', '']);
         }
     }
 

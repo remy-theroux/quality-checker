@@ -77,7 +77,7 @@ class StartCommand extends Command
     public function getContainer()
     {
         $containerFactory = new ContainerFactory();
-        $configFilePath   = getcwd() . DIRECTORY_SEPARATOR . $this->config->get('config_file');
+        $configFilePath   = getcwd() . DIRECTORY_SEPARATOR . $this->appConfig->get('config_file');
 
         return $containerFactory->buildFromConfiguration($configFilePath);
     }
