@@ -1,13 +1,7 @@
 parameters:
-  qualitychecker:
-    tasks: [phpcs, phpmd]
+  tasks: [phpcs]
 
     #PHPCS configuration
   phpcs:
-  #  standard: './vendor/iadvize/php-convention/phpcs/Iadvize'
     standard: PSR2
     paths: [./src]
-
-  #PHPMD configuration
-  phpmd:
-    paths: [./src/]

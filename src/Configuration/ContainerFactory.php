@@ -21,7 +21,6 @@ final class ContainerFactory
 
         // Load basic service file + custom user configuration
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
-        //$loader->load('parameters.yml');
         $loader->load('services.yml');
 
         // Load qualitychecker.yml
