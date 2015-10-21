@@ -31,30 +31,30 @@ class Phpmd extends AbstractTask
         $this->processBuilder->setPrefix($commandPath);
 
         $this->processBuilder->setArguments([
-            '--standard=' . $config['standard'],
+            implode(',', $config['paths']),
+            $config['format'],
+            implode(',', $config['rulesets'])
         ]);
 
-        $this->processBuilder->add('--colors');
-
-        if (!$config['show_warnings']) {
-            $this->processBuilder->add('--warning-severity=0');
+        if (isset($config['minimumpriority'])) {
+            $this->processBuilder->add('--minimumpriority=' . $config['minimumpriority']);
         }
 
-        if ($config['tab_width']) {
-            $this->processBuilder->add('--tab-width=' . $config['tab_width']);
+        if (isset($config['reportfile'])) {
+            $this->processBuilder->add('--reportfile=' . $config['reportfile']);
         }
 
-        if (count($config['sniffs'])) {
-            $this->processBuilder->add('--sniffs=' . implode(',', $config['sniffs']));
+        if (isset($config['suffixes'])) {
+            echo '--suffixes=' . implode(',', $config['suffixes']);
+            $this->processBuilder->add('--suffixes ' . implode(',', $config['suffixes']));
         }
 
-        if (count($config['ignore_patterns'])) {
-            $this->processBuilder->add('--ignore=' . implode(',', $config['ignore_patterns']));
+        if (isset($config['exclude'])) {
+            $this->processBuilder->add('--exclude ' . implode(',', $config['exclude']));
         }
 
-        $files = $this->config['paths'];
-        foreach ($files as $file) {
-            $this->processBuilder->add($file);
+        if (isset($config['strict']) && !empty($config['strict'])) {
+            $this->processBuilder->add('--strict');
         }
 
         $process = $this->processBuilder->getProcess();
@@ -64,9 +64,12 @@ class Phpmd extends AbstractTask
         if (!$process->isSuccessful()) {
             $output->write($process->getOutput());
             $output->writeln(['[PHPMD] <fg=red>Failed</fg=red>', '']);
+
+            return false;
         }
 
         $output->writeln(['[PHPMD] <fg=green>Success</fg=green>', '']);
+
         return true;
     }
 
@@ -75,6 +78,12 @@ class Phpmd extends AbstractTask
      */
     public function getDefaultConfiguration()
     {
-        return [];
+        return [
+            'format'   => 'text',
+            'rulesets' => [
+                'cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode'
+            ],
+            'suffixes' => ['.js'],
+        ];
     }
 }

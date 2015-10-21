@@ -31,5 +31,5 @@ interface TaskInterface
      *
      * @throws \RuntimeException
      */
-    public function run(OutputInterface $output, $appConfig);
+    public function run(OutputInterface $output, ArrayCollection $appConfig);
 }

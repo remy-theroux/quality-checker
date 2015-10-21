@@ -23,7 +23,7 @@ class Phpcs extends AbstractTask
      *
      * @return boolean
      */
-    public function run(OutputInterface $output, $appConfig)
+    public function run(OutputInterface $output, ArrayCollection $appConfig)
     {
         $output->writeln('[PHPCS] Running...');
 

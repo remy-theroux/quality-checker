@@ -22,9 +22,6 @@ class QualityCheckerCompilerPass implements CompilerPassInterface
         $definition   = $container->findDefinition('task_runner');
         $taskServices = $container->findTaggedServiceIds('task');
 
-        // Get configured tasks
-        //$configuration  = $container->getParameter('tasks');
-
         foreach ($taskServices as $id => $tags) {
             $definition->addMethodCall('addTask', [new Reference($id)]);
         }
