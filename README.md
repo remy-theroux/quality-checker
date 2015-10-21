@@ -43,7 +43,7 @@ parameters:
     rulesets: [cleancode, codesize, controversial, design, naming, unusedcode]
     suffixes: [php]
     timeout: 180
-``
+```
 
 
 Running
