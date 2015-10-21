@@ -48,7 +48,7 @@ parameters:
 
 Running
 --
-Start all configured tasks
+Start all configured tasks, a status code 0 is returned if all tasks are ok else -1 is returned
 
 ```sh
 $ ./vendor/bin/qualitychecker start
