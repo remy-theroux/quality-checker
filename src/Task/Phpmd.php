@@ -45,7 +45,6 @@ class Phpmd extends AbstractTask
         }
 
         if (isset($config['suffixes'])) {
-            echo '--suffixes=' . implode(',', $config['suffixes']);
             $this->processBuilder->add('--suffixes ' . implode(',', $config['suffixes']));
         }
 
