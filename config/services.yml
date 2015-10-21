@@ -24,6 +24,6 @@ services:
   logger:
     class: Monolog\Logger
     arguments:
-      - Quality checker
+      - QUALITY-CHECKER
     calls:
       - [pushHandler, [@logger_stream]]

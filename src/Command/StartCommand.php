@@ -57,8 +57,8 @@ class StartCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info('dsffdfsfsf');
-        $this->logger->error("error");
+        $this->logger->info('Execute start command');
+
         $isSuccessfull = $this->taskRunner->run($output);
 
         return $isSuccessfull ? 0 : -1;
