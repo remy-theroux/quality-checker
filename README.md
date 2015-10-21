@@ -57,6 +57,7 @@ TODO
 --
 
 
+* Add unit tests to project, obvious ^^
 * Refactor Task dependencies
 * Add better parameters dependencies & type check support
 * Add logs during execution
