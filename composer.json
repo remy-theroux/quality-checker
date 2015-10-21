@@ -30,6 +30,9 @@
     "symfony/config": "^2.7",
     "symfony/expression-language": "^2.7"
   },
+  "bin": [
+    "bin/quality-checker"
+  ],
   "scripts": {
     "post-install-cmd": [
       "./vendor/bin/phpcs --config-set installed_paths $PWD/vendor/escapestudios/symfony2-coding-standard"
