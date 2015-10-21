@@ -2,6 +2,7 @@
 
 namespace QualityChecker\Task;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -17,15 +18,18 @@ class Phpcs extends AbstractTask
     /**
      * Run task
      *
-     * @param string $binDir Binary directory
+     * @param OutputInterface $output    Output
+     * @param ArrayCollection $appConfig Application configuration
      */
-    public function run(OutputInterface $output, $binDir)
+    public function run(OutputInterface $output, $appConfig)
     {
         $output->writeln('Running PHPCS...');
 
         $config = $this->getConfiguration();
 
-        $this->processBuilder->setPrefix($binDir . DIRECTORY_SEPARATOR . self::COMMAND_NAME);
+        $commandPath = $this->getCommandPath(self::COMMAND_NAME, $appConfig->get('bin_dir'));
+        $this->processBuilder->setPrefix($commandPath);
+
         $this->processBuilder->setArguments([
             '--standard=' . $config['standard'],
         ]);
@@ -60,7 +64,7 @@ class Phpcs extends AbstractTask
         if (!$process->isSuccessful()) {
             $output->write($process->getOutput());
         } else {
-            $output->writeln(['PHPCS successfull', '', '']);
+            $output->writeln(['PHPCS successfull', '']);
         }
     }
 

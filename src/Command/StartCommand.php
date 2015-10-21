@@ -22,7 +22,7 @@ class StartCommand extends Command
     /**
      * @var ArrayCollection
      */
-    private $config;
+    private $appConfig;
 
     /**
      * @var Logger
@@ -30,14 +30,14 @@ class StartCommand extends Command
     private $logger;
 
     /**
-     * @param ArrayCollection $config Application configuration
-     * @param Logger          $logger Logger
+     * @param ArrayCollection $appConfig Application configuration
+     * @param Logger          $logger    Logger
      */
-    public function __construct(ArrayCollection $config, Logger $logger)
+    public function __construct(ArrayCollection $appConfig, Logger $logger)
     {
         parent::__construct();
-        $this->config = $config;
-        $this->logger = $logger;
+        $this->appConfig = $appConfig;
+        $this->logger    = $logger;
     }
 
     /**
@@ -65,10 +65,7 @@ class StartCommand extends Command
         $container = $this->getContainer();
         /** @var TaskRunner $taskRunner */
         $taskRunner = $container->get('task_runner');
-        $taskRunner->run(
-            $output,
-            $this->config->get('bin_dir')
-        );
+        $taskRunner->run($output, $this->appConfig);
     }
 
     /**

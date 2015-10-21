@@ -22,7 +22,7 @@ abstract class AbstractTask implements TaskInterface
      */
     public function __construct(array $config)
     {
-        $this->config         =  array_merge($this->getDefaultConfiguration(), $config);
+        $this->config         = array_merge($this->getDefaultConfiguration(), $config);
         $this->processBuilder = new ProcessBuilder();
     }
 
@@ -34,5 +34,22 @@ abstract class AbstractTask implements TaskInterface
     public function getConfiguration()
     {
         return $this->config;
+    }
+
+    /**
+     * Build full path command
+     *
+     * @param string $commandName command name
+     * @param string $binDir      Binary directory
+     *
+     * @return string
+     */
+    public function getCommandPath($commandName, $binDir)
+    {
+        if (empty($binDir)) {
+            return $commandName;
+        }
+
+        return $binDir . DIRECTORY_SEPARATOR . $commandName;
     }
 }

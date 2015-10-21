@@ -22,7 +22,7 @@ class TaskRunner
     }
 
     /**
-     * @param TaskInterface $task
+     * @param TaskInterface $task Task
      *
      * @return $this
      */
@@ -38,19 +38,19 @@ class TaskRunner
     /**
      * @todo Get BinDir et $output in a better way (dependency injection)
      *
-     * @param OutputInterface $output Output
-     * @param string          $binDir Binary directory
+     * @param OutputInterface $output    Output
+     * @param ArrayCollection $appConfig Application configuration
      *
      * @throws \RuntimeException
      */
-    public function run(OutputInterface $output, $binDir)
+    public function run(OutputInterface $output, ArrayCollection $appConfig)
     {
         $failures = false;
         $messages = [];
 
         foreach ($this->tasks as $task) {
             try {
-                $task->run($output, $binDir);
+                $task->run($output, $appConfig);
             } catch (\RuntimeException $e) {
                 $failures   = true;
                 $messages[] = $e->getMessage();
