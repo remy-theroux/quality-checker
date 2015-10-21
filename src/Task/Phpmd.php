@@ -58,6 +58,7 @@ class Phpmd extends AbstractTask
 
         $process = $this->processBuilder->getProcess();
         $process->enableOutput();
+        $process->setTimeout($config['timeout']);
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -83,6 +84,7 @@ class Phpmd extends AbstractTask
                 'cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode'
             ],
             'suffixes' => ['.js'],
+            'timeout' => 180,
         ];
     }
 }

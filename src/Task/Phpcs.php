@@ -61,6 +61,7 @@ class Phpcs extends AbstractTask
 
         $process = $this->processBuilder->getProcess();
         $process->enableOutput();
+        $process->setTimeout($config['timeout']);
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -85,6 +86,7 @@ class Phpcs extends AbstractTask
             'tab_width'       => null,
             'ignore_patterns' => [],
             'sniffs'          => [],
+            'timeout'         => 180,
         ];
     }
 }
