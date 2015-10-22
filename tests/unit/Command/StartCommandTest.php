@@ -74,7 +74,7 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
     public function testExecute()
     {
         $mockInput = Mockery::mock('Symfony\Component\Console\Input\InputInterface');
-        $mockInput->shouldReceive(['bind', 'isInteractive']);
+        $mockInput->shouldReceive('bind', 'isInteractive', 'validate');
 
         $mockOuput = Mockery::mock('Symfony\Component\Console\Output\OutputInterface');
 
