@@ -4,13 +4,11 @@ namespace QualityChecker\Command;
 
 use Monolog\Logger;
 
-use QualityChecker\Configuration\ContainerFactory;
 use QualityChecker\Task\TaskRunner;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Class CheckQualityCommand
@@ -18,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class StartCommand extends Command
 {
     /** @var Logger */
-    private $logger;
+    protected $logger;
 
     /** @var TaskRunner */
     protected $taskRunner;
@@ -60,7 +58,30 @@ class StartCommand extends Command
         $this->logger->info('Execute start command');
 
         $isSuccessfull = $this->taskRunner->run($output);
+        $exitCode      = $isSuccessfull ? 0 : -1;
 
-        return $isSuccessfull ? 0 : -1;
+        $this->logger->info('Start command leave with exit code ' . $exitCode);
+
+        return $exitCode;
+    }
+
+    /**
+     * Get property logger
+     *
+     * @return Logger
+     */
+    public function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
+     * Get property taskRunner
+     *
+     * @return TaskRunner
+     */
+    public function getTaskRunner()
+    {
+        return $this->taskRunner;
     }
 }

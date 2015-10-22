@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+	bootstrap="./phpunit.bootstrap.php"
+	colors="true"
+	verbose="true"
+	stopOnError="true"
+	stopOnFailure="true"
+	convertErrorsToExceptions="true"
+	backupStaticAttributes="false">
+
+	<testsuites>
+		<testsuite name="all">
+			<directory>../../tests</directory>
+		</testsuite>
+
+	</testsuites>
+	<filter>
+		<whitelist>
+			<directory suffix=".php">../../tests</directory>
+		</whitelist>
+	</filter>
+</phpunit>
