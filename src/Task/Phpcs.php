@@ -2,7 +2,6 @@
 
 namespace QualityChecker\Task;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -18,48 +17,49 @@ class Phpcs extends AbstractTask
     /**
      * Run task
      *
-     * @param OutputInterface $output    Output
-     * @param ArrayCollection $appConfig Application configuration
+     * @param OutputInterface $output Output
      *
      * @return boolean
      */
-    public function run(OutputInterface $output, ArrayCollection $appConfig)
+    public function run(OutputInterface $output)
     {
         $output->writeln('[PHPCS] Running...');
 
         $config = $this->getConfiguration();
 
-        $commandPath = $this->getCommandPath(self::COMMAND_NAME, $appConfig->get('bin_dir'));
-        $this->processBuilder->setPrefix($commandPath);
+        $commandPath = $this->getCommandPath(self::COMMAND_NAME, $this->binDir);
 
-        $this->processBuilder->setArguments([
+        $processBuilder = $this->createProcessBuilder();
+        $processBuilder->setPrefix($commandPath);
+
+        $processBuilder->setArguments([
             '--standard=' . $config['standard'],
         ]);
 
-        $this->processBuilder->add('--colors');
+        $processBuilder->add('--colors');
 
         if (!$config['show_warnings']) {
-            $this->processBuilder->add('--warning-severity=0');
+            $processBuilder->add('--warning-severity=0');
         }
 
         if ($config['tab_width']) {
-            $this->processBuilder->add('--tab-width=' . $config['tab_width']);
+            $processBuilder->add('--tab-width=' . $config['tab_width']);
         }
 
         if (count($config['sniffs'])) {
-            $this->processBuilder->add('--sniffs=' . implode(',', $config['sniffs']));
+            $processBuilder->add('--sniffs=' . implode(',', $config['sniffs']));
         }
 
         if (count($config['ignore_patterns'])) {
-            $this->processBuilder->add('--ignore=' . implode(',', $config['ignore_patterns']));
+            $processBuilder->add('--ignore=' . implode(',', $config['ignore_patterns']));
         }
 
         $files = $this->config['paths'];
         foreach ($files as $file) {
-            $this->processBuilder->add($file);
+            $processBuilder->add($file);
         }
 
-        $process = $this->processBuilder->getProcess();
+        $process = $processBuilder->getProcess();
         $process->enableOutput();
         $process->setTimeout($config['timeout']);
         $process->run();
@@ -72,6 +72,7 @@ class Phpcs extends AbstractTask
         }
 
         $output->writeln(['[PHPCS] <fg=green>Success</fg=green>', '']);
+
         return true;
     }
 

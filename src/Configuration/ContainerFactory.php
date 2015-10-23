@@ -7,24 +7,29 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Filesystem\Filesystem;
 
-final class ContainerFactory
+/**
+ * Class ContainerFactory
+ */
+class ContainerFactory
 {
     /**
-     * @param string $configFilePath Path to qualitychecker configuration file
+     * Build application container & compile it
      *
      * @return ContainerBuilder
      */
-    public function buildFromConfiguration($configFilePath)
+    public static function compileConfiguration()
     {
         $container = new ContainerBuilder();
         $container->addCompilerPass(new QualityCheckerCompilerPass());
 
         // Load basic service file + custom user configuration
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
+        $loader->load('parameters.yml');
         $loader->load('services.yml');
 
-        // Load qualitychecker.yml
-        $filesystem = new Filesystem();
+        // Load qualitychecker.yml from current directory
+        $configFilePath = getcwd() . DIRECTORY_SEPARATOR . 'qualitychecker.yml';
+        $filesystem     = new Filesystem();
         if ($filesystem->exists($configFilePath)) {
             $loader->load($configFilePath);
         }

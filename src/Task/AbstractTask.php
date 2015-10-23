@@ -11,19 +11,16 @@ use Symfony\Component\Process\ProcessBuilder;
  */
 abstract class AbstractTask implements TaskInterface
 {
-    /** @var array */
-    protected $config;
-
-    /** @var  ProcessBuilder */
-    protected $processBuilder;
+    /** @var string */
+    protected $binDir;
 
     /**
      * @param array $config Task configuration
      */
-    public function __construct(array $config)
+    public function __construct(array $config, $binDir)
     {
-        $this->config         = array_merge($this->getDefaultConfiguration(), $config);
-        $this->processBuilder = new ProcessBuilder();
+        $this->config = array_merge($this->getDefaultConfiguration(), $config);
+        $this->binDir = $binDir;
     }
 
     /**
@@ -51,5 +48,13 @@ abstract class AbstractTask implements TaskInterface
         }
 
         return $binDir . DIRECTORY_SEPARATOR . $commandName;
+    }
+
+    /**
+     * @return ProcessBuilder
+     */
+    public function createProcessBuilder()
+    {
+        return new ProcessBuilder();
     }
 }

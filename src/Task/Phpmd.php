@@ -2,8 +2,6 @@
 
 namespace QualityChecker\Task;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -21,42 +19,44 @@ class Phpmd extends AbstractTask
      *
      * @inheritdoc
      */
-    public function run(OutputInterface $output, ArrayCollection $appConfig)
+    public function run(OutputInterface $output)
     {
         $output->writeln('[PHPMD] Running...');
 
         $config = $this->getConfiguration();
 
-        $commandPath = $this->getCommandPath(self::COMMAND_NAME, $appConfig->get('bin_dir'));
-        $this->processBuilder->setPrefix($commandPath);
+        $commandPath = $this->getCommandPath(self::COMMAND_NAME, $this->binDir);
 
-        $this->processBuilder->setArguments([
+        $processBuilder = $this->createProcessBuilder();
+        $processBuilder->setPrefix($commandPath);
+
+        $processBuilder->setArguments([
             implode(',', $config['paths']),
             $config['format'],
             implode(',', $config['rulesets'])
         ]);
 
         if (isset($config['minimumpriority'])) {
-            $this->processBuilder->add('--minimumpriority=' . $config['minimumpriority']);
+            $processBuilder->add('--minimumpriority=' . $config['minimumpriority']);
         }
 
         if (isset($config['reportfile'])) {
-            $this->processBuilder->add('--reportfile=' . $config['reportfile']);
+            $processBuilder->add('--reportfile=' . $config['reportfile']);
         }
 
         if (isset($config['suffixes'])) {
-            $this->processBuilder->add('--suffixes ' . implode(',', $config['suffixes']));
+            $processBuilder->add('--suffixes ' . implode(',', $config['suffixes']));
         }
 
         if (isset($config['exclude'])) {
-            $this->processBuilder->add('--exclude ' . implode(',', $config['exclude']));
+            $processBuilder->add('--exclude ' . implode(',', $config['exclude']));
         }
 
         if (isset($config['strict']) && !empty($config['strict'])) {
-            $this->processBuilder->add('--strict');
+            $processBuilder->add('--strict');
         }
 
-        $process = $this->processBuilder->getProcess();
+        $process = $processBuilder->getProcess();
         $process->enableOutput();
         $process->setTimeout($config['timeout']);
         $process->run();
@@ -84,7 +84,7 @@ class Phpmd extends AbstractTask
                 'cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode'
             ],
             'suffixes' => ['.js'],
-            'timeout' => 180,
+            'timeout'  => 180,
         ];
     }
 }

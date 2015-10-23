@@ -2,8 +2,6 @@
 
 namespace QualityChecker\Task;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -25,11 +23,10 @@ interface TaskInterface
 
     /**
      * @param OutputInterface $output    Output
-     * @param ArrayCollection $appConfig Application config
      *
      * @return boolean
      *
      * @throws \RuntimeException
      */
-    public function run(OutputInterface $output, ArrayCollection $appConfig);
+    public function run(OutputInterface $output);
 }

@@ -6,6 +6,7 @@ services:
     class: QualityChecker\Task\Phpcs
     arguments:
       - "@=parameter('phpcs') ? parameter('phpcs') : []"
+      - %bin_dir%
     tags:
       - {name: task}
 
@@ -13,5 +14,16 @@ services:
     class: QualityChecker\Task\Phpmd
     arguments:
       - "@=parameter('phpmd') ? parameter('phpmd') : []"
+      - %bin_dir%
     tags:
       - {name: task}
+  logger_stream:
+    class: Monolog\Handler\StreamHandler
+    arguments:
+      - %log_dir%%log_file%
+  logger:
+    class: Monolog\Logger
+    arguments:
+      - QUALITY-CHECKER
+    calls:
+      - [pushHandler, [@logger_stream]]

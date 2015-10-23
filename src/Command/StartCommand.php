@@ -2,42 +2,35 @@
 
 namespace QualityChecker\Command;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Monolog\Logger;
-use QualityChecker\Configuration\ContainerFactory;
+
 use QualityChecker\Task\TaskRunner;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Class CheckQualityCommand
- *
- * @package QualityChecker\Command
  */
 class StartCommand extends Command
 {
-    /**
-     * @var ArrayCollection
-     */
-    private $appConfig;
+    /** @var Logger */
+    protected $logger;
+
+    /** @var TaskRunner */
+    protected $taskRunner;
 
     /**
-     * @var Logger
+     * @param TaskRunner $taskRunner Task runner
+     * @param Logger     $logger     Logger
      */
-    private $logger;
-
-    /**
-     * @param ArrayCollection $appConfig Application configuration
-     * @param Logger          $logger    Logger
-     */
-    public function __construct(ArrayCollection $appConfig, Logger $logger)
+    public function __construct(TaskRunner $taskRunner, Logger $logger)
     {
         parent::__construct();
-        $this->appConfig = $appConfig;
-        $this->logger    = $logger;
+
+        $this->taskRunner = $taskRunner;
+        $this->logger     = $logger;
     }
 
     /**
@@ -62,25 +55,33 @@ class StartCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $container = $this->getContainer();
-        /** @var TaskRunner $taskRunner */
-        $taskRunner    = $container->get('task_runner');
-        $isSuccessfull = $taskRunner->run($output, $this->appConfig);
+        $this->logger->info('Execute start command');
 
-        return ($isSuccessfull ? 0 : -1);
+        $isSuccessfull = $this->taskRunner->run($output);
+        $exitCode      = $isSuccessfull ? 0 : -1;
+
+        $this->logger->info('Start command leave with exit code ' . $exitCode);
+
+        return $exitCode;
     }
 
     /**
-     * Get container
-     * @todo Move this in abstract command class to let all commands use this
+     * Get property logger
      *
-     * @return ContainerBuilder
+     * @return Logger
      */
-    public function getContainer()
+    public function getLogger()
     {
-        $containerFactory = new ContainerFactory();
-        $configFilePath   = getcwd() . DIRECTORY_SEPARATOR . $this->appConfig->get('config_file');
+        return $this->logger;
+    }
 
-        return $containerFactory->buildFromConfiguration($configFilePath);
+    /**
+     * Get property taskRunner
+     *
+     * @return TaskRunner
+     */
+    public function getTaskRunner()
+    {
+        return $this->taskRunner;
     }
 }
