@@ -16,6 +16,12 @@
       "email": "remy.theroux@iadvize.com"
     }
   ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@github.com:iadvize/php-convention.git"
+    }
+  ],
   "require": {
     "symfony/console": "^2.6",
     "symfony/yaml": "^2.6",
@@ -32,6 +38,9 @@
     "symfony/event-dispatcher": "^2.7",
     "phpunit/phpunit": "^5.0",
     "mockery/mockery": "^0.9.4"
+  },
+  "require-dev": {
+    "iadvize/php-convention": "dev-master"
   },
   "bin": [
     "bin/qualitychecker"
