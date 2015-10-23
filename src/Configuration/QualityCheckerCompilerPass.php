@@ -28,6 +28,7 @@ class QualityCheckerCompilerPass implements CompilerPassInterface
             if (!in_array($id, $configuredTasks)) {
                 continue;
             }
+
             $definition->addMethodCall('addTask', [new Reference($id)]);
         }
     }

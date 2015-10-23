@@ -3,8 +3,6 @@
 namespace QualityChecker\Command;
 
 use Mockery;
-use Monolog\Logger;
-use QualityChecker\Task\TaskRunner;
 
 /**
  * Class StartCommandTest
@@ -58,6 +56,8 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test constructor default value
+     *
+     * @test StartCommand:__construct
      */
     public function testConstruct()
     {
@@ -71,6 +71,9 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->taskRunner, $this->command->getTaskRunner());
     }
 
+    /**
+     * @test StartCommand:execute
+     */
     public function testExecute()
     {
         $mockInput = Mockery::mock('Symfony\Component\Console\Input\InputInterface');
