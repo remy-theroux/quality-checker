@@ -15,11 +15,13 @@ abstract class AbstractTask implements TaskInterface
     protected $binDir;
 
     /**
-     * @param array $config Task configuration
+     * @param array  $config Task configuration
+     * @param string $binDir Bin drirectory
      */
     public function __construct(array $config, $binDir)
     {
         $this->config = array_merge($this->getDefaultConfiguration(), $config);
+        $this->validateConfiguration($this->config);
         $this->binDir = $binDir;
     }
 

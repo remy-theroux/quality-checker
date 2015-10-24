@@ -16,6 +16,9 @@ class TaskRunner
     /** @var TaskInterface[] */
     private $tasks;
 
+    /**
+     *
+     */
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -38,7 +41,7 @@ class TaskRunner
     /**
      * Run all configured tasks
      *
-     * @param OutputInterface $output    Output
+     * @param OutputInterface $output Output
      *
      * @return boolean
      *

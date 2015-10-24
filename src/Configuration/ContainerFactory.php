@@ -28,7 +28,7 @@ class ContainerFactory
         $loader->load('services.yml');
 
         // Load qualitychecker.yml from current directory
-        $configFilePath = getcwd() . DIRECTORY_SEPARATOR . 'qualitychecker.yml';
+        $configFilePath = getcwd() . DIRECTORY_SEPARATOR . '.qualitychecker.yml';
         $filesystem     = new Filesystem();
         if ($filesystem->exists($configFilePath)) {
             $loader->load($configFilePath);

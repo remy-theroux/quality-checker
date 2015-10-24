@@ -58,8 +58,7 @@ TODO
 
 
 * Add unit tests to project, obvious ^^
-* Refactor Task dependencies
-* Add better parameters dependencies & type check support
+* Add better parameters type check support
 * Add logs during execution
 * Add PHPUNIT support
 * Add BEHAT support
