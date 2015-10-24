@@ -93,49 +93,48 @@ class Phpmd extends AbstractTask
     }
 
     /**
+     * Validate configuration
+     *
      * @param array $config Configuration
      *
      * @throws ConfigurationValidationException
      */
     public function validateConfiguration(array $config)
     {
-        // Standard validation
-        if (!isset($config['standard'])) {
-            throw new ConfigurationValidationException('PHPCS configuration error : you must define a \'standard\' key');
-        } elseif (!is_string($config['standard'])) {
-            throw new ConfigurationValidationException('PHPCS configuration error : \'standard\' key must be a string');
-        }
-
         // Paths validation
         if (!isset($config['paths'])) {
-            throw new ConfigurationValidationException('PHPCS configuration error : you must define a \'paths\' key');
+            throw new ConfigurationValidationException('PHPMD configuration error : you must define a \'paths\' key');
         } elseif (!is_array($config['paths'])) {
-            throw new ConfigurationValidationException('PHPCS configuration error : \'paths\' key must be an array');
+            throw new ConfigurationValidationException('PHPMD configuration error : \'paths\' key must be an array');
         }
 
-        // Show warning validation
-        if (isset($config['show_warnings']) && !is_bool($config['show_warnings'])) {
-            throw new ConfigurationValidationException('PHPCS configuration error : \'show_warnings\' key must be a boolean');
+        // Format validation
+        if (!isset($config['format'])) {
+            throw new ConfigurationValidationException('PHPMD configuration error : you must define a \'format\' key');
+        } elseif (!is_string($config['format'])) {
+            throw new ConfigurationValidationException('PHPMD configuration error : \'format\' key must be a string');
         }
 
-        // Tab width validation
-        if (isset($config['tab_width']) && !is_int($config['tab_width'])) {
-            throw new ConfigurationValidationException('PHPCS configuration error : \'tab_width\' key must be a boolean');
+        // Rulesets validation
+        if (!isset($config['rulesets'])) {
+            throw new ConfigurationValidationException('PHPMD configuration error : you must define a \'rulesets\' key');
+        } elseif (!is_array($config['paths'])) {
+            throw new ConfigurationValidationException('PHPMD configuration error : \'rulesets\' key must be an array');
+        }
+
+        // Suffixes validation
+        if (isset($config['suffixes']) && !is_array($config['suffixes'])) {
+            throw new ConfigurationValidationException('PHPMD configuration error : \'suffixes\' key must be an array');
         }
 
         // Ignore patterns validation
-        if (isset($config['ignore_patterns']) && !is_array($config['ignore_patterns'])) {
-            throw new ConfigurationValidationException('PHPCS configuration error : \'ignore_patterns\' key must be a boolean');
-        }
-
-        // Sniffs validation
-        if (isset($config['sniffs']) && !is_array($config['sniffs'])) {
-            throw new ConfigurationValidationException('PHPCS configuration error : \'sniffs\' key must be a boolean');
+        if (isset($config['format']) && !is_string($config['format'])) {
+            throw new ConfigurationValidationException('PHPMD configuration error : \'format\' key must be a string');
         }
 
         // Show warning validation
         if (isset($config['timeout']) && !is_int($config['timeout'])) {
-            throw new ConfigurationValidationException('PHPCS configuration error : \'timeout\' key must be a boolean');
+            throw new ConfigurationValidationException('PHPMD configuration error : \'timeout\' key must be a boolean');
         }
     }
 }

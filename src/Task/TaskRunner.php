@@ -52,6 +52,7 @@ class TaskRunner
         $success = false;
 
         foreach ($this->tasks as $task) {
+            $task->validateConfiguration($task->getConfiguration());
             $success &= $task->run($output);
         }
 
