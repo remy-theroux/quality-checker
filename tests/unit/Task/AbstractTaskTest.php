@@ -5,17 +5,20 @@ namespace QualityChecker\Task;
 use Mockery;
 
 /**
- * Class AbstractTest
+ * Class AbstractTasktTest
  *
  * @package QualityChecker\Task
  */
-class AbstractTest extends \PHPUnit_Framework_TestCase
+class AbstractTasktTest extends \PHPUnit_Framework_TestCase
 {
     public function tearDown()
     {
         Mockery::close();
     }
 
+    /**
+     * test:
+     */
     public function testGetCommandPath()
     {
         $task = new Phpcs([], '');
