@@ -33,7 +33,6 @@ define('CONFIG_PATH', APP_DIR . 'config/parameters.yml');
 $application = new Application();
 $application->setName('php-cli quality-checker');
 
-
 try {
     $container = ContainerFactory::compileConfiguration();
 
@@ -43,11 +42,17 @@ try {
     }
 
     $config = new ArrayCollection($config);
-
     $logDir = APP_DIR . $config->get('parameters')['log_dir'];
     if (!is_writable($logDir)) {
         throw new ErrorException('The logs directory is not writable. Aborting.');
     }
+
+    /** @var \Monolog\Logger $logger */
+    $logger = $container->get('logger');
+
+    /** @var \QualityChecker\Task\TaskRunner $taskRunner */
+    $taskRunner = $container->get('task_runner');
+
 } catch (Exception $exception) {
     $application->renderException(
         $exception,
@@ -56,15 +61,8 @@ try {
     exit(-1);
 }
 
-/** @var \Monolog\Logger $logger */
-$logger = $container->get('logger');
-
-/** @var \QualityChecker\Task\TaskRunner $taskRunner */
-$taskRunner = $container->get('task_runner');
-
-
-$application->add(
-    new QualityChecker\Command\StartCommand($taskRunner, $logger)
-);
+$startCommand = new QualityChecker\Command\StartCommand($taskRunner, $logger);
+$application->setDefaultCommand($startCommand->getName());
+$application->add($startCommand);
 
 $application->run();
