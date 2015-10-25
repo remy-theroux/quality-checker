@@ -16,7 +16,7 @@ $ composer require remy-theroux/quality-checker
 Configuring
 --
 ```sh
-$ mv qualitychecker.yml.dist qualitychecker.yml
+$ mv vendor/remy-theroux/quality-checker/.qualitychecker.yml.dist .qualitychecker.yml
 ```
 
 Full configuration of tasks is available here
@@ -47,19 +47,17 @@ parameters:
 
 Running
 --
-Start all configured tasks, a status code 0 is returned if all tasks are ok else -1 is returned
+Start all configured tasks, a status code 0 is returned if all tasks are successfull else -1 is returned.
+Quality checker is searching for .qualitychecker.yml at current location.
 
 ```sh
-$ ./vendor/bin/qualitychecker start
+$ ./vendor/bin/qualitychecker
 ```
 
 TODO
 --
 
-
 * Add unit tests to project, obvious ^^
-* Refactor Task dependencies
-* Add better parameters dependencies & type check support
 * Add logs during execution
 * Add PHPUNIT support
 * Add BEHAT support

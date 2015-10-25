@@ -2,6 +2,8 @@
 
 namespace QualityChecker\Task;
 
+use QualityChecker\Configuration\ConfigurationValidationException;
+
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -22,11 +24,20 @@ interface TaskInterface
     public function getDefaultConfiguration();
 
     /**
-     * @param OutputInterface $output    Output
+     * @param OutputInterface $output Output
      *
      * @return boolean
      *
      * @throws \RuntimeException
      */
     public function run(OutputInterface $output);
+
+    /**
+     * @param array $config Configuration
+     *
+     * @throws ConfigurationValidationException
+     *
+     * @return void
+     */
+    public function validateConfiguration(array $config);
 }

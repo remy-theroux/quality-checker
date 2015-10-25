@@ -4,5 +4,5 @@ parameters:
   # PHPCS configuration
   phpcs:
     # Could be PEAR, PHPCS, PSR1, PSR2, Squiz, Zend or a directory with a ruleset './vendor/iadvize/php-convention/phpcs/Iadvize'
-    standard: PSR2
+    standard: './vendor/iadvize/php-convention/phpcs/Iadvize'
     paths: [./src]

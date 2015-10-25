@@ -17,10 +17,12 @@ services:
       - %bin_dir%
     tags:
       - {name: task}
+
   logger_stream:
     class: Monolog\Handler\StreamHandler
     arguments:
       - %log_dir%%log_file%
+
   logger:
     class: Monolog\Logger
     arguments:
