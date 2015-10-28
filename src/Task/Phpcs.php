@@ -27,9 +27,9 @@ class Phpcs extends AbstractTask
     {
         $output->writeln('[PHPCS] Running...');
 
-        $config      = $this->getConfiguration();
-        $commandPath = $this->getCommandPath(self::COMMAND_NAME, $this->binDir);
+        $config = $this->getConfiguration();
 
+        $commandPath    = $this->getCommandPath(self::COMMAND_NAME, $this->binDir);
         $processBuilder = $this->createProcessBuilder();
         $processBuilder->setPrefix($commandPath);
 
@@ -111,6 +111,8 @@ class Phpcs extends AbstractTask
             throw new ConfigurationValidationException('PHPCS configuration error : you must define a \'paths\' key');
         } elseif (!is_array($config['paths'])) {
             throw new ConfigurationValidationException('PHPCS configuration error : \'paths\' key must be an array');
+        } elseif(count($config['paths']) == 0) {
+            throw new ConfigurationValidationException('PHPCS configuration error : \'paths\' key must be a non empty array');
         }
 
         // Show warning validation
