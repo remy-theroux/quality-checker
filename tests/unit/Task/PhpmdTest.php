@@ -11,7 +11,6 @@ use Mockery;
  */
 class PhpmdTest extends \PHPUnit_Framework_TestCase
 {
-
     public function tearDown()
     {
         Mockery::close();
@@ -22,65 +21,39 @@ class PhpmdTest extends \PHPUnit_Framework_TestCase
      */
     public function testRun()
     {
+        $mockProcess = Mockery::mock('Symfony\Component\Process\Process');
+        $mockProcess->shouldReceive('setTimeout')->with(180);
+        $mockProcess->shouldReceive('run');
+
         $mockProcessBuilder = Mockery::mock('Symfony\Component\Process\ProcessBuilder');
 
+        $mockProcessBuilder->shouldReceive('getProcess')->andReturn($mockProcess);
         $mockProcessBuilder->shouldReceive('setPrefix');
-
-        $mockProcessBuilder
-            ->shouldReceive('setArguments')
-            ->with('./src,./vendor text cleancode,codesize,controversial');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--minimumpriority=');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--warning-severity=0');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--tab-width=4');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--sniffs=Sniffs1,Sniffs2');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--ignore=*.log,.gitignore');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--ignore=*.log,.gitignore');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('src');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('vendor');
+        $mockProcessBuilder->shouldReceive('setArguments')->with('./src,./vendor text cleancode,codesize,controversial');
+        $mockProcessBuilder->shouldReceive('add')->with('--minimumpriority=5');
+        $mockProcessBuilder->shouldReceive('add')->with('--reportfile=./report.txt');
+        $mockProcessBuilder->shouldReceive('add')->with('--exclude js,php');
+        $mockProcessBuilder->shouldReceive('add')->with('--strict');
 
         $config = [
-            'paths'    => ['./src', './vendor'],
-            'format'   => 'text',
-            'rulesets' => [
-                'cleancode', 'codesize', 'controversial',
+            'paths'           => ['./src', './vendor'],
+            'format'          => 'text',
+            'rulesets'        => [
+                'cleancode',
+                'codesize',
+                'controversial',
             ],
-            'suffixes' => ['.js'],
+            'suffixes'        => ['.js'],
             'minimumpriority' => 5,
-            'reportfile' => './report.txt',
-            'exclude' => ['js', 'php'],
-            'strict'  => true,
-            'timeout' => 180,
+            'reportfile'      => './report.txt',
+            'exclude'         => ['js', 'php'],
+            'strict'          => true,
+            'timeout'         => 180,
         ];
         $binDir = 'vendor/bin';
 
         $phpcs = Mockery::mock('QualityChecker\Task\Phpcs[createProcessBuilder]', [$config, $binDir]);
-        $phpcs
-            ->shouldReceive('createProcessBuilder')
-            ->andReturn($mockProcessBuilder);
+        $phpcs->shouldReceive('createProcessBuilder')->andReturn($mockProcessBuilder);
     }
 
     /**
@@ -93,7 +66,12 @@ class PhpmdTest extends \PHPUnit_Framework_TestCase
         $defaultConfig = [
             'format'   => 'text',
             'rulesets' => [
-                'cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode',
+                'cleancode',
+                'codesize',
+                'controversial',
+                'design',
+                'naming',
+                'unusedcode',
             ],
             'suffixes' => ['.js'],
             'timeout'  => 180,
@@ -191,9 +169,8 @@ class PhpmdTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
      * @dataProvider provideValidateConfiguration
-     * @test Phpcs::validateConfiguration
+     * @test         Phpcs::validateConfiguration
      */
     public function testValidateConfiguration($config, $isExceptionExpected)
     {

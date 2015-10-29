@@ -84,14 +84,14 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDefaultConfiguration()
     {
-        $phpmd         = new Phpmd([], '');
-        $config        = $phpmd->getDefaultConfiguration();
+        $phpcs         = new Phpcs([], '');
+        $config        = $phpcs->getDefaultConfiguration();
         $defaultConfig = [
-            'format'   => 'text',
-            'rulesets' => [
-                'cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode',
-            ],
-            'suffixes' => ['.js'],
+            'standard'        => 'PSR2',
+            'show_warnings'   => true,
+            'tab_width'       => null,
+            'ignore_patterns' => [],
+            'sniffs'          => [],
             'timeout'  => 180,
         ];
 
@@ -193,12 +193,12 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateConfiguration($config, $isExceptionExpected)
     {
-        $phpmd = new Phpmd([], '');
+        $phpcs = new Phpcs([], '');
 
         if ($isExceptionExpected) {
             $this->setExpectedException('QualityChecker\Configuration\ConfigurationValidationException');
         }
 
-        $phpmd->validateConfiguration($config);
+        $phpcs->validateConfiguration($config);
     }
 }
