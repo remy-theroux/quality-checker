@@ -11,7 +11,6 @@ use Mockery;
  */
 class PhpcsTest extends \PHPUnit_Framework_TestCase
 {
-
     public function tearDown()
     {
         Mockery::close();
@@ -22,45 +21,24 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
      */
     public function testRun()
     {
+        $mockProcess = Mockery::mock('Symfony\Component\Process\Process');
+        $mockProcess->shouldReceive('setTimeout')->with(180);
+        $mockProcess->shouldReceive('run');
+        $mockProcess->shouldReceive('stop');
+
         $mockProcessBuilder = Mockery::mock('Symfony\Component\Process\ProcessBuilder');
 
+        $mockProcessBuilder->shouldReceive('getProcess')->andReturn($mockProcess);
         $mockProcessBuilder->shouldReceive('setPrefix');
-
-        $mockProcessBuilder
-            ->shouldReceive('setArguments')
-            ->with('--standard=PSR2');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--colors');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--warning-severity=0');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--tab-width=4');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--sniffs=Sniffs1,Sniffs2');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--ignore=*.log,.gitignore');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('--ignore=*.log,.gitignore');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('src');
-
-        $mockProcessBuilder
-            ->shouldReceive('add')
-            ->with('vendor');
+        $mockProcessBuilder->shouldReceive('setArguments')->with('--standard=PSR2');
+        $mockProcessBuilder->shouldReceive('add')->with('--colors');
+        $mockProcessBuilder->shouldReceive('add')->with('--warning-severity=0');
+        $mockProcessBuilder->shouldReceive('add')->with('--tab-width=4');
+        $mockProcessBuilder->shouldReceive('add')->with('--sniffs=Sniffs1,Sniffs2');
+        $mockProcessBuilder->shouldReceive('add')->with('--ignore=*.log,.gitignore');
+        $mockProcessBuilder->shouldReceive('add')->with('--ignore=*.log,.gitignore');
+        $mockProcessBuilder->shouldReceive('add')->with('src');
+        $mockProcessBuilder->shouldReceive('add')->with('vendor');
 
         $config = [
             'paths'           => ['src', 'vendor'],
@@ -74,9 +52,7 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
         $binDir = 'vendor/bin';
 
         $phpcs = Mockery::mock('QualityChecker\Task\Phpcs[createProcessBuilder]', [$config, $binDir]);
-        $phpcs
-            ->shouldReceive('createProcessBuilder')
-            ->andReturn($mockProcessBuilder);
+        $phpcs->shouldReceive('createProcessBuilder')->andReturn($mockProcessBuilder);
     }
 
     /**
@@ -92,7 +68,7 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
             'tab_width'       => null,
             'ignore_patterns' => [],
             'sniffs'          => [],
-            'timeout'  => 180,
+            'timeout'         => 180,
         ];
 
         $this->assertInternalType('array', $config);
@@ -187,9 +163,8 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
      * @dataProvider provideValidateConfiguration
-     * @test Phpcs::validateConfiguration
+     * @test         Phpcs::validateConfiguration
      */
     public function testValidateConfiguration($config, $isExceptionExpected)
     {

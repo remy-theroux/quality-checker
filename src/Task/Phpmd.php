@@ -118,7 +118,7 @@ class Phpmd extends AbstractTask
         // Rulesets validation
         if (!isset($config['rulesets'])) {
             throw new ConfigurationValidationException('PHPMD configuration error : you must define a \'rulesets\' key');
-        } elseif (!is_array($config['paths'])) {
+        } elseif (!is_array($config['rulesets'])) {
             throw new ConfigurationValidationException('PHPMD configuration error : \'rulesets\' key must be an array');
         }
 

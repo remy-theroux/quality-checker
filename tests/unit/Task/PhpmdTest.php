@@ -24,6 +24,7 @@ class PhpmdTest extends \PHPUnit_Framework_TestCase
         $mockProcess = Mockery::mock('Symfony\Component\Process\Process');
         $mockProcess->shouldReceive('setTimeout')->with(180);
         $mockProcess->shouldReceive('run');
+        $mockProcess->shouldReceive('stop');
 
         $mockProcessBuilder = Mockery::mock('Symfony\Component\Process\ProcessBuilder');
 
@@ -57,12 +58,12 @@ class PhpmdTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test Phpcs::getDefaultConfiguration
+     * @test Phpmd::getDefaultConfiguration
      */
     public function testGetDefaultConfiguration()
     {
-        $phpcs         = new Phpcs([], '');
-        $config        = $phpcs->getDefaultConfiguration();
+        $phpmd         = new Phpmd([], '');
+        $config        = $phpmd->getDefaultConfiguration();
         $defaultConfig = [
             'format'   => 'text',
             'rulesets' => [
@@ -82,88 +83,139 @@ class PhpmdTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test Phpcs::validateConfiguration
+     * @test Phpmd::validateConfiguration
      */
     public function provideValidateConfiguration()
     {
         return [
+            // Test paths, format & rulesets params
             [
                 [],
                 true,
             ],
             [
                 [
-                    'standard' => []
+                    'paths' => [],
                 ],
                 true,
             ],
             [
                 [
-                    'paths' => ''
+                    'paths'  => [],
+                    'format' => 'text',
                 ],
                 true,
             ],
             [
                 [
-                    'standard'      => 'PSR2',
-                    'paths'         => ['.src'],
-                    'show_warnings' => 5,
+                    'paths'    => [],
+                    'format'   => 'text',
+                    'rulesets' => 'unvalid',
                 ],
                 true,
             ],
             [
                 [
-                    'standard'      => 'PSR2',
-                    'paths'         => ['.src'],
-                    'show_warnings' => true,
-                    'tab_width'     => 'non integer value',
-                ],
-                true,
-            ],
-            [
-                [
-                    'standard'        => 'PSR2',
-                    'paths'           => ['.src'],
-                    'show_warnings'   => true,
-                    'tab_width'       => 5,
-                    'ignore_patterns' => '',
-                ],
-                true,
-            ],
-            [
-                [
-                    'standard'        => 'PSR2',
-                    'paths'           => ['.src'],
-                    'show_warnings'   => true,
-                    'tab_width'       => 5,
-                    'ignore_patterns' => ['php'],
-                    'sniffs'          => 6,
-                ],
-                true,
-            ],
-            [
-                [
-                    'standard'        => 'PSR2',
-                    'paths'           => ['.src'],
-                    'show_warnings'   => true,
-                    'tab_width'       => 5,
-                    'ignore_patterns' => ['php'],
-                    'sniffs'          => ['Sniff1', 'Sniff2'],
-                    'timeout'         => true,
-                ],
-                true,
-            ],
-            [
-                [
-                    'standard'        => 'PSR2',
-                    'paths'           => ['.src'],
-                    'show_warnings'   => true,
-                    'tab_width'       => 5,
-                    'ignore_patterns' => ['php'],
-                    'sniffs'          => ['Sniff1', 'Sniff2'],
-                    'timeout'         => 120,
+                    'paths'    => ['./src'],
+                    'format'   => 'text',
+                    'rulesets' => ['cleancode'],
                 ],
                 false,
+            ],
+            // Exclude param
+            [
+                [
+                    'paths'    => ['./src'],
+                    'format'   => 'text',
+                    'rulesets' => ['cleancode'],
+                    'exclude'  => ['php'],
+                ],
+                false,
+            ],
+            [
+                [
+                    'paths'    => ['./src'],
+                    'format'   => 'text',
+                    'rulesets' => ['cleancode'],
+                    'exclude'  => false,
+                ],
+                true,
+            ],
+            // Timeout param
+            [
+                [
+                    'paths'    => ['./src'],
+                    'format'   => 'text',
+                    'rulesets' => ['cleancode'],
+                    'timeout'  => 20,
+                ],
+                false,
+            ],
+            [
+                [
+                    'paths'    => ['./src'],
+                    'format'   => 'text',
+                    'rulesets' => ['cleancode'],
+                    'timeout'  => [],
+                ],
+                true,
+            ],
+            // Strict param
+            [
+                [
+                    'paths'    => ['./src'],
+                    'format'   => 'text',
+                    'rulesets' => ['cleancode'],
+                    'strict'   => false,
+                ],
+                false,
+            ],
+            [
+                [
+                    'paths'    => ['./src'],
+                    'format'   => 'text',
+                    'rulesets' => ['cleancode'],
+                    'timeout'  => [],
+                ],
+                true,
+            ],
+            // Reportfile param
+            [
+                [
+                    'paths'      => ['./src'],
+                    'format'     => 'text',
+                    'rulesets'   => ['cleancode'],
+                    'reportfile' => 'test.txt',
+                ],
+                false,
+            ],
+            [
+                [
+                    'paths'      => ['./src'],
+                    'format'     => 'text',
+                    'rulesets'   => ['cleancode'],
+                    'reportfile' => [],
+                ],
+                true,
+            ],
+            // Minimumpriority param
+            [
+                [
+                    'paths'           => ['./src'],
+                    'format'          => 'text',
+                    'rulesets'        => ['cleancode'],
+                    'minimumpriority' => 5,
+                ],
+                false,
+            ],
+            [
+                [
+                    'paths'           => ['./src'],
+                    'format'          => 'text',
+                    'rulesets'        => ['cleancode'],
+                    'minimumpriority' => [],
+                ],
+                true,
             ],
         ];
     }
@@ -174,12 +226,12 @@ class PhpmdTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateConfiguration($config, $isExceptionExpected)
     {
-        $phpcs = new Phpcs([], '');
+        $phpmd = new Phpmd([], '');
 
         if ($isExceptionExpected) {
             $this->setExpectedException('QualityChecker\Configuration\ConfigurationValidationException');
         }
 
-        $phpcs->validateConfiguration($config);
+        $phpmd->validateConfiguration($config);
     }
 }
