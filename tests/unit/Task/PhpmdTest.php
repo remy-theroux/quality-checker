@@ -5,11 +5,11 @@ namespace QualityChecker\Task;
 use Mockery;
 
 /**
- * Class PhpcsTest
+ * Class PhpmdTest
  *
  * @package QualityChecker\Task
  */
-class PhpcsTest extends \PHPUnit_Framework_TestCase
+class PhpmdTest extends \PHPUnit_Framework_TestCase
 {
 
     public function tearDown()
@@ -18,7 +18,7 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test Phpcs::run
+     * @test Phpmd::run
      */
     public function testRun()
     {
@@ -28,11 +28,11 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
 
         $mockProcessBuilder
             ->shouldReceive('setArguments')
-            ->with('--standard=PSR2');
+            ->with('./src,./vendor text cleancode,codesize,controversial');
 
         $mockProcessBuilder
             ->shouldReceive('add')
-            ->with('--colors');
+            ->with('--minimumpriority=');
 
         $mockProcessBuilder
             ->shouldReceive('add')
@@ -63,13 +63,17 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
             ->with('vendor');
 
         $config = [
-            'paths'           => ['src', 'vendor'],
-            'standard'        => 'PSR2',
-            'show_warnings'   => false,
-            'tab_width'       => 4,
-            'ignore_patterns' => ['*.log', '.gitignore'],
-            'sniffs'          => ['Sniffs1', 'Sniffs2'],
-            'timeout'         => 180,
+            'paths'    => ['./src', './vendor'],
+            'format'   => 'text',
+            'rulesets' => [
+                'cleancode', 'codesize', 'controversial',
+            ],
+            'suffixes' => ['.js'],
+            'minimumpriority' => 5,
+            'reportfile' => './report.txt',
+            'exclude' => ['js', 'php'],
+            'strict'  => true,
+            'timeout' => 180,
         ];
         $binDir = 'vendor/bin';
 
@@ -84,8 +88,8 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDefaultConfiguration()
     {
-        $phpmd         = new Phpmd([], '');
-        $config        = $phpmd->getDefaultConfiguration();
+        $phpcs         = new Phpcs([], '');
+        $config        = $phpcs->getDefaultConfiguration();
         $defaultConfig = [
             'format'   => 'text',
             'rulesets' => [
@@ -193,12 +197,12 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateConfiguration($config, $isExceptionExpected)
     {
-        $phpmd = new Phpmd([], '');
+        $phpcs = new Phpcs([], '');
 
         if ($isExceptionExpected) {
             $this->setExpectedException('QualityChecker\Configuration\ConfigurationValidationException');
         }
 
-        $phpmd->validateConfiguration($config);
+        $phpcs->validateConfiguration($config);
     }
 }
