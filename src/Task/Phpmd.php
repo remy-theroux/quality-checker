@@ -118,7 +118,7 @@ class Phpmd extends AbstractTask
         // Rulesets validation
         if (!isset($config['rulesets'])) {
             throw new ConfigurationValidationException('PHPMD configuration error : you must define a \'rulesets\' key');
-        } elseif (!is_array($config['paths'])) {
+        } elseif (!is_array($config['rulesets'])) {
             throw new ConfigurationValidationException('PHPMD configuration error : \'rulesets\' key must be an array');
         }
 
@@ -127,14 +127,29 @@ class Phpmd extends AbstractTask
             throw new ConfigurationValidationException('PHPMD configuration error : \'suffixes\' key must be an array');
         }
 
-        // Ignore patterns validation
-        if (isset($config['format']) && !is_string($config['format'])) {
-            throw new ConfigurationValidationException('PHPMD configuration error : \'format\' key must be a string');
+        // Exclude validation
+        if (isset($config['exclude']) && !is_array($config['exclude'])) {
+            throw new ConfigurationValidationException('PHPMD configuration error : \'exclude\' key must be an array');
         }
 
-        // Show warning validation
+        // Timeout validation
         if (isset($config['timeout']) && !is_int($config['timeout'])) {
-            throw new ConfigurationValidationException('PHPMD configuration error : \'timeout\' key must be a boolean');
+            throw new ConfigurationValidationException('PHPMD configuration error : \'timeout\' key must be an integer');
+        }
+
+        // Strict validation
+        if (isset($config['strict']) && !is_bool($config['strict'])) {
+            throw new ConfigurationValidationException('PHPMD configuration error : \'strict\' key must be a boolean');
+        }
+
+        // Reportfile validation
+        if (isset($config['reportfile']) && !is_string($config['reportfile'])) {
+            throw new ConfigurationValidationException('PHPMD configuration error : \'reportfile\' key must be a string');
+        }
+
+        // Reportfile validation
+        if (isset($config['minimumpriority']) && !is_int($config['minimumpriority'])) {
+            throw new ConfigurationValidationException('PHPMD configuration error : \'minimumpriority\' key must be an integer');
         }
     }
 }

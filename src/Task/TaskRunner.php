@@ -49,13 +49,37 @@ class TaskRunner
      */
     public function run(OutputInterface $output)
     {
-        $success = false;
+        $isSuccess = true;
 
         foreach ($this->tasks as $task) {
             $task->validateConfiguration($task->getConfiguration());
-            $success &= $task->run($output);
+            $isSuccess = $isSuccess && $task->run($output);
         }
 
-        return $success;
+        return $isSuccess;
+    }
+
+    /**
+     * Get property tasks
+     *
+     * @return TaskInterface[]
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
+    }
+
+    /**
+     * Set property tasks
+     *
+     * @param TaskInterface[] $tasks
+     *
+     * @return $this
+     */
+    public function setTasks($tasks)
+    {
+        $this->tasks = $tasks;
+
+        return $this;
     }
 }

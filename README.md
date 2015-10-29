@@ -1,4 +1,4 @@
-Quality checker
+Quality checker  ![Travis CI status](https://travis-ci.org/remy-theroux/quality-checker.svg?branch=master "Travis CI status")
 ===============
 
 A PHP command line quality tools. It lets you check your code quality with a single yaml file.

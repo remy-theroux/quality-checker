@@ -11,8 +11,11 @@ use Symfony\Component\Process\ProcessBuilder;
  */
 abstract class AbstractTask implements TaskInterface
 {
-    /** @var string */
+    /** @var string $binDir Binary directory */
     protected $binDir;
+
+    /** @var array $config Task configuration */
+    protected $config;
 
     /**
      * @param array  $config Task configuration
