@@ -111,7 +111,7 @@ class Phpcs extends AbstractTask
             throw new ConfigurationValidationException('PHPCS configuration error : you must define a \'paths\' key');
         } elseif (!is_array($config['paths'])) {
             throw new ConfigurationValidationException('PHPCS configuration error : \'paths\' key must be an array');
-        } elseif(count($config['paths']) == 0) {
+        } elseif (count($config['paths']) == 0) {
             throw new ConfigurationValidationException('PHPCS configuration error : \'paths\' key must be a non empty array');
         }
 
