@@ -87,8 +87,7 @@ class Phpmd extends AbstractTask
             'rulesets' => [
                 'cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode',
             ],
-            'suffixes' => ['.js'],
-            'timeout'  => 180,
+            'timeout'  => 540,
         ];
     }
 
