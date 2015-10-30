@@ -74,8 +74,7 @@ class PhpmdTest extends \PHPUnit_Framework_TestCase
                 'naming',
                 'unusedcode',
             ],
-            'suffixes' => ['.js'],
-            'timeout'  => 180,
+            'timeout'  => 540,
         ];
 
         $this->assertInternalType('array', $config);
