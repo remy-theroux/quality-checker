@@ -56,8 +56,6 @@ $ ./vendor/bin/qualitychecker
 
 TODO
 --
-
-* Add unit tests to project, obvious ^^
 * Add logs during execution
 * Add PHPUNIT support
 * Add BEHAT support
