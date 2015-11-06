@@ -56,6 +56,7 @@ $ ./vendor/bin/qualitychecker
 
 TODO
 --
+* Use Symfony config to validate configuration
 * Add logs during execution
 * Add PHPUNIT support
 * Add BEHAT support
