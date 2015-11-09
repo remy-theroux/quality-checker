@@ -84,7 +84,7 @@ abstract class AbstractTask implements TaskInterface
         $configuration = new $configurationClassName();
 
         $processor = new Processor();
-        
+
         return $processor->processConfiguration(
             $configuration,
             $config
