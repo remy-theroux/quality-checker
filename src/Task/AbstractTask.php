@@ -77,11 +77,11 @@ abstract class AbstractTask implements TaskInterface
     {
         $className = $this->getShortClassName();
 
-        $configurationClassName = 'QualityChecker\Task\Configuration\\' . $className;
-        if (!class_exists($configurationClassName)) {
-            throw new ValidationException('Can\t find configuration validation class for task ' . $configurationClassName);
+        $configClassName = 'QualityChecker\Task\Configuration\\' . $className;
+        if (!class_exists($configClassName)) {
+            throw new ValidationException('Can\t find configuration validation class for task ' . $configClassName);
         }
-        $configuration = new $configurationClassName();
+        $configuration = new $configClassName();
 
         $processor = new Processor();
 
