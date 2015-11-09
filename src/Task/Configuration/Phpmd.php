@@ -10,7 +10,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  *
  * @package QualityChecker\Task\Configuration
  */
-class Phpmd  implements ConfigurationInterface
+class Phpmd implements ConfigurationInterface
 {
     /**
      * @return TreeBuilder
