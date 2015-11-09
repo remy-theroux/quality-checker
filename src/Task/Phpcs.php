@@ -83,7 +83,7 @@ class Phpcs extends AbstractTask
         return [
             'standard'        => 'PSR2',
             'show_warnings'   => true,
-            'tab_width'       => null,
+            'tab_width'       => 0,
             'ignore_patterns' => [],
             'sniffs'          => [],
             'timeout'         => 180,

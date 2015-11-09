@@ -25,19 +25,27 @@ class Phpcs implements ConfigurationInterface
                     ->defaultValue('PSR2')
                 ->end()
                 ->arrayNode('paths')
-                    ->cannotBeEmpty()
                     ->isRequired()
-                ->end()
-                ->booleanNode('show_warnings')
-                ->end()
-                ->integerNode('tab_width')
+                    ->prototype('scalar')->end()
                 ->end()
                 ->arrayNode('ignore_patterns')
+                    ->prototype('scalar')->end()
                 ->end()
                 ->arrayNode('sniffs')
+                    ->prototype('scalar')->end()
+                ->end()
+                ->booleanNode('show_warnings')
+                    ->defaultValue(false)
+                ->end()
+                ->integerNode('tab_width')
+                    ->defaultValue(null)
+                    ->min(0)
                 ->end()
                 ->integerNode('timeout')
-                ->end();
+                    ->defaultValue(360)
+                    ->min(0)
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }
