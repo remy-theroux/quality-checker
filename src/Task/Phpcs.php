@@ -28,12 +28,14 @@ class Phpcs extends AbstractTask
         $config = $this->getConfiguration();
 
         $commandPath    = $this->getCommandPath(self::COMMAND_NAME, $this->binDir);
-        $processBuilder = $this->createProcessBuilder();
+        $processBuilder = $this->processBuilder;
         $processBuilder->setPrefix($commandPath);
 
-        $processBuilder->setArguments([
-            '--standard=' . $config['standard'],
-        ]);
+        $processBuilder->setArguments(
+            [
+                '--standard=' . $config['standard'],
+            ]
+        );
 
         $processBuilder->add('--colors');
 
@@ -64,7 +66,7 @@ class Phpcs extends AbstractTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $output->write($process->getOutput());
+            $output->writeln($process->getOutput());
             $output->writeln(['[PHPCS] <fg=red>Failed</fg=red>', '']);
 
             return false;

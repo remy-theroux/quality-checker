@@ -23,14 +23,16 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
     {
         $mockProcess = Mockery::mock('Symfony\Component\Process\Process');
         $mockProcess->shouldReceive('setTimeout')->with(180);
+        $mockProcess->shouldReceive('enableOutput');
+        $mockProcess->shouldReceive('isSuccessful');
+        $mockProcess->shouldReceive('getOutput');
         $mockProcess->shouldReceive('run');
         $mockProcess->shouldReceive('stop');
 
         $mockProcessBuilder = Mockery::mock('Symfony\Component\Process\ProcessBuilder');
-
+        $mockProcessBuilder->shouldReceive('setArguments')->with(['--standard=PSR2']);
         $mockProcessBuilder->shouldReceive('getProcess')->andReturn($mockProcess);
         $mockProcessBuilder->shouldReceive('setPrefix');
-        $mockProcessBuilder->shouldReceive('setArguments')->with('--standard=PSR2');
         $mockProcessBuilder->shouldReceive('add')->with('--colors');
         $mockProcessBuilder->shouldReceive('add')->with('--warning-severity=0');
         $mockProcessBuilder->shouldReceive('add')->with('--tab-width=4');
@@ -40,39 +42,25 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
         $mockProcessBuilder->shouldReceive('add')->with('src');
         $mockProcessBuilder->shouldReceive('add')->with('vendor');
 
+        $mockOutput = Mockery::mock('Symfony\Component\Console\Output\OutputInterface');
+        $mockOutput->shouldReceive('writeln');
+
         $config = [
-            'paths'           => ['src', 'vendor'],
-            'standard'        => 'PSR2',
-            'show_warnings'   => false,
-            'tab_width'       => 4,
-            'ignore_patterns' => ['*.log', '.gitignore'],
-            'sniffs'          => ['Sniffs1', 'Sniffs2'],
-            'timeout'         => 180,
-        ];
-        $binDir = 'vendor/bin';
-
-        $phpcs = Mockery::mock('QualityChecker\Task\Phpcs[createProcessBuilder]', [$config, $binDir]);
-        $phpcs->shouldReceive('createProcessBuilder')->andReturn($mockProcessBuilder);
-    }
-
-    /**
-     * @test Phpcs::getDefaultConfiguration
-     */
-    public function testGetDefaultConfiguration()
-    {
-        $phpcs         = new Phpcs([], '');
-        $config        = $phpcs->getDefaultConfiguration();
-        $defaultConfig = [
-            'standard'        => 'PSR2',
-            'show_warnings'   => true,
-            'tab_width'       => null,
-            'ignore_patterns' => [],
-            'sniffs'          => [],
-            'timeout'         => 180,
+            'phpcs' => [
+                'paths'           => ['src', 'vendor'],
+                'standard'        => 'PSR2',
+                'show_warnings'   => false,
+                'tab_width'       => 4,
+                'ignore_patterns' => ['*.log', '.gitignore'],
+                'sniffs'          => ['Sniffs1', 'Sniffs2'],
+                'timeout'         => 180,
+            ],
         ];
 
-        $this->assertInternalType('array', $config);
-        $this->assertEquals($defaultConfig, $config);
+        $binDir     = 'vendor/bin';
+
+        $phpcs = new Phpcs($config, $binDir, $mockProcessBuilder);
+        $phpcs->run($mockOutput);
     }
 
     /**
@@ -160,20 +148,5 @@ class PhpcsTest extends \PHPUnit_Framework_TestCase
                 false,
             ],
         ];
-    }
-
-    /**
-     * @dataProvider provideValidateConfiguration
-     * @test         Phpcs::validateConfiguration
-     */
-    public function testValidateConfiguration($config, $isExceptionExpected)
-    {
-        $phpcs = new Phpcs([], '');
-
-        if ($isExceptionExpected) {
-            $this->setExpectedException('QualityChecker\Configuration\ConfigurationValidationException');
-        }
-
-        $phpcs->validateConfiguration($config);
     }
 }

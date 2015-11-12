@@ -27,16 +27,17 @@ class Phpmd extends AbstractTask
 
         $config = $this->getConfiguration();
 
-        $commandPath = $this->getCommandPath(self::COMMAND_NAME, $this->binDir);
-
-        $processBuilder = $this->createProcessBuilder();
+        $commandPath    = $this->getCommandPath(self::COMMAND_NAME, $this->binDir);
+        $processBuilder = $this->processBuilder;
         $processBuilder->setPrefix($commandPath);
 
-        $processBuilder->setArguments([
-            implode(',', $config['paths']),
-            $config['format'],
-            implode(',', $config['rulesets']),
-        ]);
+        $processBuilder->setArguments(
+            [
+                implode(',', $config['paths']),
+                $config['format'],
+                implode(',', $config['rulesets']),
+            ]
+        );
 
         if (isset($config['minimumpriority'])) {
             $processBuilder->add('--minimumpriority=' . $config['minimumpriority']);
@@ -83,7 +84,12 @@ class Phpmd extends AbstractTask
         return [
             'format'   => 'text',
             'rulesets' => [
-                'cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode',
+                'cleancode',
+                'codesize',
+                'controversial',
+                'design',
+                'naming',
+                'unusedcode',
             ],
             'timeout'  => 540,
         ];

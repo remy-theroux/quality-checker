@@ -19,14 +19,19 @@ abstract class AbstractTask implements TaskInterface
     /** @var array $config Task configuration */
     protected $config;
 
+    /** @var ProcessBuilder $processBuilder Process builder */
+    protected $processBuilder;
+
     /**
-     * @param array  $config Task configuration
-     * @param string $binDir Bin directory
+     * @param array          $config         Task configuration
+     * @param string         $binDir         Bin directory
+     * @param ProcessBuilder $processBuilder Process builder
      */
-    public function __construct(array $config, $binDir)
+    public function __construct(array $config, $binDir, ProcessBuilder $processBuilder)
     {
-        $this->config = $this->validateConfiguration($config);
-        $this->binDir = $binDir;
+        $this->config         = $this->validateConfiguration($config);
+        $this->binDir         = $binDir;
+        $this->processBuilder = $processBuilder;
     }
 
     /**
@@ -57,20 +62,11 @@ abstract class AbstractTask implements TaskInterface
     }
 
     /**
-     * @return ProcessBuilder
-     */
-    public function createProcessBuilder()
-    {
-        return new ProcessBuilder();
-    }
-
-    /**
      * Validate task configuration
      *
      * @param array $config Task configuration
      *
      * @return array
-     *
      * @throws ValidationException
      */
     public function validateConfiguration(array $config)
@@ -81,9 +77,9 @@ abstract class AbstractTask implements TaskInterface
         if (!class_exists($configClassName)) {
             throw new ValidationException('Can\t find configuration validation class for task ' . $configClassName);
         }
-        $configuration = new $configClassName();
 
-        $processor = new Processor();
+        $configuration = new $configClassName();
+        $processor     = new Processor();
 
         return $processor->processConfiguration(
             $configuration,

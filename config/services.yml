@@ -1,4 +1,7 @@
 services:
+  process_builder:
+      class: Symfony\Component\Process\ProcessBuilder
+
   task_runner:
       class: QualityChecker\Task\TaskRunner
 
@@ -7,6 +10,7 @@ services:
     arguments:
       - phpcs: "@=parameter('phpcs') ? parameter('phpcs') : []"
       - %bin_dir%
+      - @process_builder
     tags:
       - {name: task}
 
@@ -15,6 +19,7 @@ services:
     arguments:
       - phpmd: "@=parameter('phpmd') ? parameter('phpmd') : []"
       - %bin_dir%
+      - @process_builder
     tags:
       - {name: task}
 
