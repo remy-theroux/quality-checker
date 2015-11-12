@@ -18,7 +18,7 @@ class Phpmd implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('phpcs');
+        $rootNode    = $treeBuilder->root('phpmd');
 
         $rootNode
             ->children()
@@ -48,6 +48,9 @@ class Phpmd implements ConfigurationInterface
                 ->end()
                 ->integerNode('minimumpriority')
                     ->min(0)
+                ->end()
+                ->arrayNode('exclude')
+                    ->prototype('scalar')->end()
                 ->end()
             ->end();
 

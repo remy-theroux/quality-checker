@@ -23,62 +23,46 @@ class PhpmdTest extends \PHPUnit_Framework_TestCase
     {
         $mockProcess = Mockery::mock('Symfony\Component\Process\Process');
         $mockProcess->shouldReceive('setTimeout')->with(180);
+        $mockProcess->shouldReceive('enableOutput');
+        $mockProcess->shouldReceive('isSuccessful');
+        $mockProcess->shouldReceive('getOutput');
         $mockProcess->shouldReceive('run');
         $mockProcess->shouldReceive('stop');
 
         $mockProcessBuilder = Mockery::mock('Symfony\Component\Process\ProcessBuilder');
-
+        $mockProcessBuilder->shouldReceive('setArguments')->with(['./src,./vendor', 'text', 'cleancode,codesize,controversial']);
         $mockProcessBuilder->shouldReceive('getProcess')->andReturn($mockProcess);
         $mockProcessBuilder->shouldReceive('setPrefix');
-        $mockProcessBuilder->shouldReceive('setArguments')->with('./src,./vendor text cleancode,codesize,controversial');
         $mockProcessBuilder->shouldReceive('add')->with('--minimumpriority=5');
         $mockProcessBuilder->shouldReceive('add')->with('--reportfile=./report.txt');
         $mockProcessBuilder->shouldReceive('add')->with('--exclude js,php');
         $mockProcessBuilder->shouldReceive('add')->with('--strict');
+        $mockProcessBuilder->shouldReceive('add')->with('--suffixes .js,.php');
+
+        $mockOutput = Mockery::mock('Symfony\Component\Console\Output\OutputInterface');
+        $mockOutput->shouldReceive('writeln');
 
         $config = [
-            'paths'           => ['./src', './vendor'],
-            'format'          => 'text',
-            'rulesets'        => [
-                'cleancode',
-                'codesize',
-                'controversial',
+            'phpmd' => [
+                'paths'           => ['./src', './vendor'],
+                'format'          => 'text',
+                'rulesets'        => [
+                    'cleancode',
+                    'codesize',
+                    'controversial',
+                ],
+                'suffixes'        => ['.js', '.php'],
+                'minimumpriority' => 5,
+                'reportfile'      => './report.txt',
+                'exclude'         => ['js', 'php'],
+                'strict'          => true,
+                'timeout'         => 180,
             ],
-            'suffixes'        => ['.js'],
-            'minimumpriority' => 5,
-            'reportfile'      => './report.txt',
-            'exclude'         => ['js', 'php'],
-            'strict'          => true,
-            'timeout'         => 180,
         ];
         $binDir = 'vendor/bin';
 
-        $phpcs = Mockery::mock('QualityChecker\Task\Phpcs[createProcessBuilder]', [$config, $binDir]);
-        $phpcs->shouldReceive('createProcessBuilder')->andReturn($mockProcessBuilder);
-    }
-
-    /**
-     * @test Phpmd::getDefaultConfiguration
-     */
-    public function testGetDefaultConfiguration()
-    {
-        $phpmd         = new Phpmd([], '');
-        $config        = $phpmd->getDefaultConfiguration();
-        $defaultConfig = [
-            'format'   => 'text',
-            'rulesets' => [
-                'cleancode',
-                'codesize',
-                'controversial',
-                'design',
-                'naming',
-                'unusedcode',
-            ],
-            'timeout'  => 540,
-        ];
-
-        $this->assertInternalType('array', $config);
-        $this->assertEquals($defaultConfig, $config);
+        $phpmd = new Phpmd($config, $binDir, $mockProcessBuilder);
+        $phpmd->run($mockOutput);
     }
 
     /**
@@ -217,20 +201,5 @@ class PhpmdTest extends \PHPUnit_Framework_TestCase
                 true,
             ],
         ];
-    }
-
-    /**
-     * @dataProvider provideValidateConfiguration
-     * @test         Phpcs::validateConfiguration
-     */
-    public function testValidateConfiguration($config, $isExceptionExpected)
-    {
-        $phpmd = new Phpmd([], '');
-
-        if ($isExceptionExpected) {
-            $this->setExpectedException('QualityChecker\Configuration\ConfigurationValidationException');
-        }
-
-        $phpmd->validateConfiguration($config);
     }
 }
