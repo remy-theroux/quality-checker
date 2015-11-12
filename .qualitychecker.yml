@@ -1,8 +1,13 @@
 parameters:
-  tasks: [phpcs]
+  tasks: [phpcs,phpmd]
 
   # PHPCS configuration
   phpcs:
     # Could be PEAR, PHPCS, PSR1, PSR2, Squiz, Zend or a directory with a ruleset './vendor/iadvize/php-convention/phpcs/Iadvize'
-    standard: './vendor/iadvize/php-convention/phpcs/Iadvize'
+    standard: ./vendor/iadvize/php-convention/phpcs/Iadvize
     paths: [./src]
+  # PHPMD configuration
+  phpmd:
+    format: text
+    paths: [./src]
+    rulesets: [cleancode,codesize,controversial,design,naming]

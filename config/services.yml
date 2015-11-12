@@ -1,20 +1,25 @@
 services:
+  process_builder:
+      class: Symfony\Component\Process\ProcessBuilder
+
   task_runner:
       class: QualityChecker\Task\TaskRunner
 
   phpcs:
     class: QualityChecker\Task\Phpcs
     arguments:
-      - "@=parameter('phpcs') ? parameter('phpcs') : []"
+      - phpcs: "@=parameter('phpcs') ? parameter('phpcs') : []"
       - %bin_dir%
+      - @process_builder
     tags:
       - {name: task}
 
   phpmd:
     class: QualityChecker\Task\Phpmd
     arguments:
-      - "@=parameter('phpmd') ? parameter('phpmd') : []"
+      - phpmd: "@=parameter('phpmd') ? parameter('phpmd') : []"
       - %bin_dir%
+      - @process_builder
     tags:
       - {name: task}
 

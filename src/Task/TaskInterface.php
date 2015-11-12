@@ -31,13 +31,4 @@ interface TaskInterface
      * @throws \RuntimeException
      */
     public function run(OutputInterface $output);
-
-    /**
-     * @param array $config Configuration
-     *
-     * @throws ConfigurationValidationException
-     *
-     * @return void
-     */
-    public function validateConfiguration(array $config);
 }
