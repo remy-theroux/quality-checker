@@ -2,7 +2,7 @@
 
 namespace QualityChecker\Task;
 
-use QualityChecker\Task\Configuration\ValidationException;
+use QualityChecker\Exception\ConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Process\ProcessBuilder;
 
@@ -67,15 +67,15 @@ abstract class AbstractTask implements TaskInterface
      * @param array $config Task configuration
      *
      * @return array
-     * @throws ValidationException
+     * @throws ConfigurationException
      */
     public function validateConfiguration(array $config)
     {
         $className = $this->getShortClassName();
 
-        $configClassName = 'QualityChecker\Task\Configuration\\' . $className;
+        $configClassName = 'QualityChecker\Task\Configuration\\' . $className . 'Configuration';
         if (!class_exists($configClassName)) {
-            throw new ValidationException('Can\t find configuration validation class for task ' . $configClassName);
+            throw new ConfigurationException('Can\t find configuration validation class for task ' . $configClassName);
         }
 
         $configuration = new $configClassName();

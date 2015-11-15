@@ -6,11 +6,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
- * Class Phpmd
+ * Class PhpcsConfiguration
  *
  * @package QualityChecker\Task\Configuration
  */
-class Phpmd implements ConfigurationInterface
+class PhpcsConfiguration implements ConfigurationInterface
 {
     /**
      * @return TreeBuilder
@@ -18,39 +18,33 @@ class Phpmd implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('phpmd');
+        $rootNode    = $treeBuilder->root('phpcs');
 
         $rootNode
             ->children()
-                ->enumNode('format')
-                    ->isRequired()
-                    ->values(['xml', 'html', 'text'])
+                ->scalarNode('standard')
+                    ->defaultValue('PSR2')
                 ->end()
                 ->arrayNode('paths')
                     ->isRequired()
                     ->prototype('scalar')->end()
                 ->end()
-                ->arrayNode('rulesets')
-                    ->isRequired()
+                ->arrayNode('ignore_patterns')
                     ->prototype('scalar')->end()
                 ->end()
-                ->arrayNode('suffixes')
+                ->arrayNode('sniffs')
                     ->prototype('scalar')->end()
+                ->end()
+                ->booleanNode('show_warnings')
+                    ->defaultValue(false)
+                ->end()
+                ->integerNode('tab_width')
+                    ->defaultValue(null)
+                    ->min(0)
                 ->end()
                 ->integerNode('timeout')
                     ->defaultValue(360)
                     ->min(0)
-                ->end()
-                ->booleanNode('strict')
-                    ->defaultValue(false)
-                ->end()
-                ->scalarNode('reportfile')
-                ->end()
-                ->integerNode('minimumpriority')
-                    ->min(0)
-                ->end()
-                ->arrayNode('exclude')
-                    ->prototype('scalar')->end()
                 ->end()
             ->end();
 
