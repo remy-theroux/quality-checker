@@ -56,7 +56,6 @@ $ ./vendor/bin/qualitychecker
 
 TODO
 --
-* Add test for configuration class
 * Add logs during execution
 * Add PHPUNIT support
 * Add PHPCPEC support
