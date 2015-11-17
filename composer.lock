@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "435de30e5808e689b48f3c6d85de6c44",
-    "content-hash": "cd740d6fa103f65e363966e48c844a6f",
+    "hash": "10e7be6b08095f3646d5fe977686fffa",
+    "content-hash": "d83bafaab1af42a22e29fd8e7a3b7e88",
     "packages": [
         {
             "name": "doctrine/collections",
@@ -1889,8 +1889,14 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:iadvize/php-convention.git",
-                "reference": "d2704f4452d95fd1b6c89c119731ca1b524db559"
+                "url": "https://github.com/iadvize/php-convention.git",
+                "reference": "46bb7d9ce6d6950626b6d39da94709b5c1b44335"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iadvize/php-convention/zipball/46bb7d9ce6d6950626b6d39da94709b5c1b44335",
+                "reference": "46bb7d9ce6d6950626b6d39da94709b5c1b44335",
+                "shasum": ""
             },
             "require": {
                 "escapestudios/symfony2-coding-standard": "~2.0",
@@ -1900,11 +1906,7 @@
                 "squizlabs/php_codesniffer": "2.*"
             },
             "type": "project",
-            "scripts": {
-                "post-install-cmd": [
-                    "./vendor/bin/phpcs --config-set installed_paths $PWD/vendor/escapestudios/symfony2-coding-standard"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "authors": [
                 {
                     "name": "Rémy Théroux",
@@ -1917,7 +1919,7 @@
                 "php",
                 "quality"
             ],
-            "time": "2015-11-16 15:07:17"
+            "time": "2015-11-10 09:04:51"
         },
         {
             "name": "symfony/finder",
