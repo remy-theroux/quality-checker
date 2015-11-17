@@ -16,12 +16,6 @@
       "email": "remy.theroux@iadvize.com"
     }
   ],
-  "repositories": [
-    {
-      "type": "git",
-      "url": "git@github.com:iadvize/php-convention.git"
-    }
-  ],
   "require": {
     "symfony/console": "^2.6",
     "monolog/monolog": "^1.11",
@@ -35,7 +29,7 @@
     "symfony/expression-language": "^2.7",
     "phpmd/phpmd": "^2.3",
     "symfony/event-dispatcher": "^2.7",
-    "phpunit/phpunit": "^4.8",
+    "phpunit/phpunit": "^5.0",
     "mockery/mockery": "^0.9.4"
   },
   "require-dev": {
