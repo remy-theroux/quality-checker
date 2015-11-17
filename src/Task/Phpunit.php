@@ -43,7 +43,6 @@ class Phpunit extends AbstractTask
             $processBuilder->add('--warning-severity=0');
         }
 
-
         if (count($config['sniffs'])) {
             $processBuilder->add('--sniffs=' . implode(',', $config['sniffs']));
         }
