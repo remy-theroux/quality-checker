@@ -1,5 +1,5 @@
 parameters:
-  tasks: [phpcs,phpmd]
+  tasks: [phpcs,phpmd,phpunit]
 
   # PHPCS configuration
   phpcs:
@@ -10,4 +10,7 @@ parameters:
   phpmd:
     format: text
     paths: [./src]
-    rulesets: [cleancode,codesize,controversial,design,naming]
+    rulesets: [codesize,controversial,design,naming]
+  # PHPUNIT configuration
+  phpunit:
+    timeout: 50

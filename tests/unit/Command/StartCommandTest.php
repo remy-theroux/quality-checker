@@ -61,9 +61,6 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        var_dump(ini_get('test'));
-        echo ini_get('test2');
-        exit();
         $name = $this->command->getName();
         $this->assertNotEmpty($name);
 

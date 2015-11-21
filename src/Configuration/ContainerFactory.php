@@ -20,6 +20,8 @@ class ContainerFactory
      * Build application container & compile it
      *
      * @return ContainerBuilder
+     *
+     * @throws ConfigurationException
      */
     public static function compileConfiguration()
     {

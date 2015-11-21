@@ -129,16 +129,16 @@
         },
         {
             "name": "escapestudios/symfony2-coding-standard",
-            "version": "2.7.0",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/escapestudios/Symfony2-coding-standard.git",
-                "reference": "8cb3240587f40ac57c43ea7b880dd4d023022194"
+                "reference": "21a159ff42c00373538c9e42cd2c9d72448be951"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/escapestudios/Symfony2-coding-standard/zipball/8cb3240587f40ac57c43ea7b880dd4d023022194",
-                "reference": "8cb3240587f40ac57c43ea7b880dd4d023022194",
+                "url": "https://api.github.com/repos/escapestudios/Symfony2-coding-standard/zipball/21a159ff42c00373538c9e42cd2c9d72448be951",
+                "reference": "21a159ff42c00373538c9e42cd2c9d72448be951",
                 "shasum": ""
             },
             "require": {
@@ -171,7 +171,7 @@
                 "Symfony2",
                 "phpcs"
             ],
-            "time": "2015-08-28 17:28:27"
+            "time": "2015-11-19 16:49:08"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -932,16 +932,16 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "382c729a52b7ef682e94c73fd6868f5ee8116ba7"
+                "reference": "b28b029356e65091dfbf8c2bc4ef106ffece509e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/382c729a52b7ef682e94c73fd6868f5ee8116ba7",
-                "reference": "382c729a52b7ef682e94c73fd6868f5ee8116ba7",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/b28b029356e65091dfbf8c2bc4ef106ffece509e",
+                "reference": "b28b029356e65091dfbf8c2bc4ef106ffece509e",
                 "shasum": ""
             },
             "require": {
@@ -984,7 +984,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-10-18 07:55:54"
+            "time": "2015-11-09 15:37:17"
         },
         {
             "name": "psr/log",
@@ -1976,12 +1976,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iadvize/php-convention.git",
-                "reference": "46bb7d9ce6d6950626b6d39da94709b5c1b44335"
+                "reference": "b3d5c23a119027c3ed45ec4be2a46af7bd2561f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iadvize/php-convention/zipball/46bb7d9ce6d6950626b6d39da94709b5c1b44335",
-                "reference": "46bb7d9ce6d6950626b6d39da94709b5c1b44335",
+                "url": "https://api.github.com/repos/iadvize/php-convention/zipball/b3d5c23a119027c3ed45ec4be2a46af7bd2561f7",
+                "reference": "b3d5c23a119027c3ed45ec4be2a46af7bd2561f7",
                 "shasum": ""
             },
             "require": {
@@ -1991,9 +1991,16 @@
                 "phpmd/phpmd": "^2.3.2",
                 "squizlabs/php_codesniffer": "2.*"
             },
-            "type": "project",
+            "type": "library",
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "authors": [
+                {
+                    "name": "Marc Fricou",
+                    "email": "marc.fricou@iadvize.com"
+                },
                 {
                     "name": "Rémy Théroux",
                     "email": "remy.theroux@iadvize.com"
@@ -2005,7 +2012,7 @@
                 "php",
                 "quality"
             ],
-            "time": "2015-11-10 09:04:51"
+            "time": "2015-11-17 09:48:58"
         },
         {
             "name": "symfony/finder",

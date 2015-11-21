@@ -65,8 +65,9 @@ class Phpcs extends AbstractTask
         $process->setTimeout($config['timeout']);
         $process->run();
 
+        $output->writeln($process->getOutput());
+
         if (!$process->isSuccessful()) {
-            $output->writeln($process->getOutput());
             $output->writeln(['[PHPCS] <fg=red>Failed</fg=red>', '']);
 
             return false;
