@@ -5,14 +5,14 @@ namespace QualityChecker\Task;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class Phpcs
+ * Class Phpunit
  *
  * @package QualityChecker\Task
  */
-class Phpcs extends AbstractTask
+class Phpunit extends AbstractTask
 {
     /** @const string */
-    const COMMAND_NAME = 'phpcs';
+    const COMMAND_NAME = 'phpunit';
 
     /**
      * Run task
@@ -23,42 +23,12 @@ class Phpcs extends AbstractTask
      */
     public function run(OutputInterface $output)
     {
-        $output->writeln('[PHPCS] Running...');
+        $output->writeln('[PHPUNIT] Testing...');
 
-        $config = $this->getConfiguration();
-
+        $config         = $this->getConfiguration();
         $commandPath    = $this->getCommandPath(self::COMMAND_NAME, $this->binDir);
         $processBuilder = $this->processBuilder;
         $processBuilder->setPrefix($commandPath);
-
-        $processBuilder->setArguments(
-            [
-                '--standard=' . $config['standard'],
-            ]
-        );
-
-        $processBuilder->add('--colors');
-
-        if (!$config['show_warnings']) {
-            $processBuilder->add('--warning-severity=0');
-        }
-
-        if ($config['tab_width']) {
-            $processBuilder->add('--tab-width=' . $config['tab_width']);
-        }
-
-        if (count($config['sniffs'])) {
-            $processBuilder->add('--sniffs=' . implode(',', $config['sniffs']));
-        }
-
-        if (count($config['ignore_patterns'])) {
-            $processBuilder->add('--ignore=' . implode(',', $config['ignore_patterns']));
-        }
-
-        $files = $this->config['paths'];
-        foreach ($files as $file) {
-            $processBuilder->add($file);
-        }
 
         $process = $processBuilder->getProcess();
         $process->enableOutput();
@@ -68,12 +38,12 @@ class Phpcs extends AbstractTask
         $output->writeln($process->getOutput());
 
         if (!$process->isSuccessful()) {
-            $output->writeln(['[PHPCS] <fg=red>Failed</fg=red>', '']);
+            $output->writeln(['[PHPUNIT] <fg=red>Failed</fg=red>', '']);
 
             return false;
         }
 
-        $output->writeln(['[PHPCS] <fg=green>Success</fg=green>', '']);
+        $output->writeln(['[PHPUNIT] <fg=green>Success</fg=green>', '']);
 
         return true;
     }

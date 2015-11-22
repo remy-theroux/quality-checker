@@ -64,8 +64,9 @@ class Phpmd extends AbstractTask
         $process->setTimeout($config['timeout']);
         $process->run();
 
+        $output->writeln($process->getOutput());
+
         if (!$process->isSuccessful()) {
-            $output->writeln($process->getOutput());
             $output->writeln(['[PHPMD] <fg=red>Failed</fg=red>', '']);
 
             return false;
