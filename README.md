@@ -3,8 +3,9 @@ Quality checker  ![Travis CI status](https://travis-ci.org/remy-theroux/quality-
 
 A PHP command line quality tools. It lets you check your code quality with a single yaml file.
 Supported tools are :
-- PHP code sniffer (PHPCS)
-- PHP mess detector (PHPMD)
+- PHP code sniffer - [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer)
+- PHP mess detector - [PHPMD](http://http://phpmd.org/)
+- PHP unit - [PHPUNIT](https://phpunit.de/)
 - ... many more are coming
 
 Installing
@@ -25,7 +26,7 @@ Full configuration of tasks is available here
 parameters:
   tasks: [phpcs, phpmd]
 
-  # [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) configuration
+  # PHPCS configuration
   phpcs:
     # Could be PEAR, PHPCS, PSR1, PSR2, Squiz, Zend or a directory with a ruleset './vendor/iadvize/php-convention/phpcs/Iadvize'
     standard: PSR2
@@ -36,7 +37,7 @@ parameters:
     sniffs: []
     timeout: 180
 
-  # [PHPMD](http://http://phpmd.org/) configuration
+  # PHPMD configuration
   phpmd:
     paths: [./src/]
     format: text
@@ -44,7 +45,7 @@ parameters:
     suffixes: [php]
     timeout: 180
     
-  # [PHPUNIT](https://phpunit.de/) configuration, only use phpunit.xml configuration
+  # PHPUNIT configuration, only use phpunit.xml configuration
   phpunit:
     timeout: 180
 ```
