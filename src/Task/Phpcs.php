@@ -39,23 +39,23 @@ class Phpcs extends AbstractTask
 
         $processBuilder->add('--colors');
 
-        if (!$config['show_warnings']) {
+        if (isset($config['show_warnings']) && !$config['show_warnings']) {
             $processBuilder->add('--warning-severity=0');
         }
 
-        if ($config['tab_width']) {
+        if (isset($config['tab_width'])) {
             $processBuilder->add('--tab-width=' . $config['tab_width']);
         }
 
-        if (count($config['sniffs'])) {
+        if (isset($config['sniffs'])) {
             $processBuilder->add('--sniffs=' . implode(',', $config['sniffs']));
         }
 
-        if (count($config['ignore_patterns'])) {
+        if (isset($config['ignore_patterns'])) {
             $processBuilder->add('--ignore=' . implode(',', $config['ignore_patterns']));
         }
 
-        $files = $this->config['paths'];
+        $files = $config['paths'];
         foreach ($files as $file) {
             $processBuilder->add($file);
         }

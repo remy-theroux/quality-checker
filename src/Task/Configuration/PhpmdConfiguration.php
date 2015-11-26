@@ -25,7 +25,6 @@ class PhpmdConfiguration implements ConfigurationInterface
                 ->enumNode('format')
                     ->isRequired()
                     ->values(['xml', 'html', 'text'])
-                    ->defaultValue('text')
                 ->end()
                 ->arrayNode('paths')
                     ->isRequired()
@@ -34,27 +33,18 @@ class PhpmdConfiguration implements ConfigurationInterface
                 ->arrayNode('rulesets')
                     ->isRequired()
                     ->prototype('scalar')->end()
-                    ->defaultValue([
-                        'cleancode',
-                        'codesize',
-                        'controversial',
-                        'design',
-                        'naming',
-                        'unusedcode',
-                    ])
                 ->end()
                 ->arrayNode('suffixes')
                     ->prototype('scalar')->end()
                 ->end()
                 ->integerNode('timeout')
-                    ->defaultValue(360)
+                    ->defaultValue(540)
                     ->min(0)
                 ->end()
                 ->booleanNode('strict')
                     ->defaultValue(false)
                 ->end()
-                ->scalarNode('reportfile')
-                ->end()
+                ->scalarNode('reportfile')->end()
                 ->integerNode('minimumpriority')
                     ->min(0)
                 ->end()

@@ -13,6 +13,49 @@ use Symfony\Component\Config\Definition\Processor;
 class PhpmdConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Test default configuration
+     */
+    public function testDefaultConfiguration()
+    {
+        $configuration = new PhpmdConfiguration();
+        $processor     = new Processor();
+
+        $config = [
+            'phpmd' => [
+                'format' => 'text',
+                'paths' => ['./src'],
+                'rulesets' => ['cleancode'],
+            ],
+        ];
+
+        $config = $processor->processConfiguration(
+            $configuration,
+            $config
+        );
+
+        $this->assertArrayHasKey('format', $config);
+        $this->assertEquals('text', $config['format']);
+
+        $this->assertArrayHasKey('paths', $config);
+        $this->assertEquals(['./src'], $config['paths']);
+
+        $this->assertArrayHasKey('rulesets', $config);
+        $this->assertEquals(['cleancode'], $config['rulesets']);
+
+        $this->assertArrayHasKey('suffixes', $config);
+        $this->assertEquals([], $config['suffixes']);
+
+        $this->assertArrayHasKey('timeout', $config);
+        $this->assertEquals(540, $config['timeout']);
+
+        $this->assertArrayHasKey('strict', $config);
+        $this->assertFalse($config['strict']);
+
+        $this->assertArrayHasKey('exclude', $config);
+        $this->assertEquals([], $config['exclude']);
+    }
+
+    /**
      * @param array   $config  Config to validate
      * @param boolean $isValid Must config be valid
      *
