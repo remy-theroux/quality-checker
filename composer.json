@@ -30,7 +30,8 @@
     "phpmd/phpmd": "^2.3",
     "symfony/event-dispatcher": "^2.7",
     "phpunit/phpunit": "^5.0",
-    "mockery/mockery": "^0.9.4"
+    "mockery/mockery": "^0.9.4",
+    "phpspec/phpspec": "^2.3"
   },
   "require-dev": {
     "iadvize/php-convention": "dev-master"

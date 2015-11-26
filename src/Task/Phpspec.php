@@ -5,14 +5,14 @@ namespace QualityChecker\Task;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class Phpunit
+ * Class Phpspec
  *
  * @package QualityChecker\Task
  */
-class Phpunit extends AbstractTask
+class Phpspec extends AbstractTask
 {
     /** @const string */
-    const COMMAND_NAME = 'phpunit';
+    const COMMAND_NAME = 'phpspec';
 
     /**
      * Run task
@@ -23,7 +23,7 @@ class Phpunit extends AbstractTask
      */
     public function run(OutputInterface $output)
     {
-        $output->writeln('[PHPUNIT] Testing...');
+        $output->writeln('[PHPSPEC] Testing...');
 
         $config         = $this->getConfiguration();
         $commandPath    = $this->getCommandPath(self::COMMAND_NAME, $this->binDir);
@@ -33,6 +33,11 @@ class Phpunit extends AbstractTask
         $process = $processBuilder->getProcess();
         $process->enableOutput();
         $process->setTimeout($config['timeout']);
+
+        if (count($config['config'])) {
+            $processBuilder->add('--config ' . $config['config']);
+        }
+
         $process->run();
 
         $output->writeln($process->getOutput());

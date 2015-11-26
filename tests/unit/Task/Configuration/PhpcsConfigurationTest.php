@@ -13,6 +13,44 @@ use Symfony\Component\Config\Definition\Processor;
 class PhpcsConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Test default configuration
+     */
+    public function testDefaultConfiguration()
+    {
+        $configuration = new PhpcsConfiguration();
+        $processor     = new Processor();
+
+        $config = [
+            'phpcs' => [
+                'paths' => ['.src'],
+            ],
+        ];
+
+        $config = $processor->processConfiguration(
+            $configuration,
+            $config
+        );
+
+        $this->assertArrayHasKey('paths', $config);
+        $this->assertEquals(['.src'], $config['paths']);
+
+        $this->assertArrayHasKey('standard', $config);
+        $this->assertEquals('PSR2', $config['standard']);
+
+        $this->assertArrayHasKey('ignore_patterns', $config);
+        $this->assertEquals([], $config['ignore_patterns']);
+
+        $this->assertArrayHasKey('sniffs', $config);
+        $this->assertEquals([], $config['sniffs']);
+
+        $this->assertArrayHasKey('show_warnings', $config);
+        $this->assertFalse($config['show_warnings']);
+
+        $this->assertArrayHasKey('timeout', $config);
+        $this->assertEquals(540, $config['timeout']);
+    }
+
+    /**
      * @param array   $config  Config to validate
      * @param boolean $isValid Must config be valid
      *

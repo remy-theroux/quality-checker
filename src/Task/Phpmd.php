@@ -76,23 +76,4 @@ class Phpmd extends AbstractTask
 
         return true;
     }
-
-    /**
-     * @return array
-     */
-    public function getDefaultConfiguration()
-    {
-        return [
-            'format'   => 'text',
-            'rulesets' => [
-                'cleancode',
-                'codesize',
-                'controversial',
-                'design',
-                'naming',
-                'unusedcode',
-            ],
-            'timeout'  => 540,
-        ];
-    }
 }

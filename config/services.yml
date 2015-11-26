@@ -33,6 +33,15 @@ services:
     tags:
       - {name: task}
 
+  phpunit:
+    class: QualityChecker\Task\Phpspec
+    arguments:
+      - phpmd: "@=parameter('phpspec') ? parameter('phpspec') : []"
+      - %bin_dir%
+      - @process_builder=
+    tags:
+      - {name: task}
+
   logger_stream:
     class: Monolog\Handler\StreamHandler
     arguments:
