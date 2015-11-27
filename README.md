@@ -45,8 +45,15 @@ parameters:
     suffixes: [php]
     timeout: 180
     
-  # PHPUNIT configuration, only use phpunit.xml configuration
+  # PHPUNIT configuration, only use phpunit.xml configuration file
   phpunit:
+    timeout: 180
+    
+  # PHPSPEC configuration, only use a yml configuration file, file name can be configured
+  phpspec:
+    config: ./path/to/config/phpspec.yml (default to .phpspec.yml)
+    verbose: true
+    quiet: true
     timeout: 180
 ```
 

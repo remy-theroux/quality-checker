@@ -47,11 +47,11 @@ class Phpcs extends AbstractTask
             $processBuilder->add('--tab-width=' . $config['tab_width']);
         }
 
-        if (isset($config['sniffs'])) {
+        if (!empty($config['sniffs'])) {
             $processBuilder->add('--sniffs=' . implode(',', $config['sniffs']));
         }
 
-        if (isset($config['ignore_patterns'])) {
+        if (!empty($config['ignore_patterns'])) {
             $processBuilder->add('--ignore=' . implode(',', $config['ignore_patterns']));
         }
 

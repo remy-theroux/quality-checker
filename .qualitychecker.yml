@@ -1,5 +1,5 @@
 parameters:
-  tasks: [phpcs,phpmd,phpunit]
+  tasks: [phpspec]
 
   # PHPCS configuration
   phpcs:
@@ -13,4 +13,7 @@ parameters:
     rulesets: [codesize,controversial,design,naming]
   # PHPUNIT configuration
   phpunit:
-    timeout: 50
+    timeout: 540
+  # PHPSPEC configuration
+  phpspec:
+    verbose: true

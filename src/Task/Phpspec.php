@@ -29,13 +29,22 @@ class Phpspec extends AbstractTask
         $commandPath    = $this->getCommandPath(self::COMMAND_NAME, $this->binDir);
         $processBuilder = $this->processBuilder;
         $processBuilder->setPrefix($commandPath);
+        $processBuilder->add('run');
 
         $process = $processBuilder->getProcess();
         $process->enableOutput();
         $process->setTimeout($config['timeout']);
 
-        if (count($config['config'])) {
+        if (isset($config['config'])) {
             $processBuilder->add('--config ' . $config['config']);
+        }
+
+        if (!empty($config['verbose'])) {
+            $processBuilder->add('--verbose');
+        }
+
+        if (!empty($config['quiet'])) {
+            $processBuilder->add('--quiet');
         }
 
         $process->run();
@@ -43,12 +52,12 @@ class Phpspec extends AbstractTask
         $output->writeln($process->getOutput());
 
         if (!$process->isSuccessful()) {
-            $output->writeln(['[PHPUNIT] <fg=red>Failed</fg=red>', '']);
+            $output->writeln(['[PHPSPEC] <fg=red>Failed</fg=red>', '']);
 
             return false;
         }
 
-        $output->writeln(['[PHPUNIT] <fg=green>Success</fg=green>', '']);
+        $output->writeln(['[PHPSPEC] <fg=green>Success</fg=green>', '']);
 
         return true;
     }

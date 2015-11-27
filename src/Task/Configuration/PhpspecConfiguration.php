@@ -23,11 +23,11 @@ class PhpspecConfiguration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->integerNode('timeout')
-                    ->defaultValue(360)
+                    ->defaultValue(540)
                     ->min(0)
                 ->end()
                 ->scalarNode('config')->end()
-                ->booleanNode('no-interaction')->end()
+                ->booleanNode('quiet')->end()
                 ->booleanNode('verbose')->end()
             ->end();
 

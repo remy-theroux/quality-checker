@@ -33,7 +33,7 @@ services:
     tags:
       - {name: task}
 
-  phpunit:
+  phpspec:
     class: QualityChecker\Task\Phpspec
     arguments:
       - phpmd: "@=parameter('phpspec') ? parameter('phpspec') : []"
