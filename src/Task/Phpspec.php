@@ -31,11 +31,7 @@ class Phpspec extends AbstractTask
         $processBuilder->setPrefix($commandPath);
         $processBuilder->add('run');
 
-        $process = $processBuilder->getProcess();
-        $process->enableOutput();
-        $process->setTimeout($config['timeout']);
-
-        if (isset($config['config'])) {
+        if (!empty($config['config'])) {
             $processBuilder->add('--config ' . $config['config']);
         }
 
@@ -47,6 +43,9 @@ class Phpspec extends AbstractTask
             $processBuilder->add('--quiet');
         }
 
+        $process = $processBuilder->getProcess();
+        $process->enableOutput();
+        $process->setTimeout($config['timeout']);
         $process->run();
 
         $output->writeln($process->getOutput());
