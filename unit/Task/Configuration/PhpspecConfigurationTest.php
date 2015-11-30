@@ -6,11 +6,11 @@ use Mockery;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
- * Class PhpunitConfigurationTest
+ * Class PhpspecConfigurationTest
  *
  * @package QualityChecker\Task\Configuration
  */
-class PhpunitConfigurationTest extends \PHPUnit_Framework_TestCase
+class PhpspecConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test default configuration
@@ -21,7 +21,7 @@ class PhpunitConfigurationTest extends \PHPUnit_Framework_TestCase
         $processor     = new Processor();
 
         $config = [
-            'phpunit' => [],
+            'phpspec' => [],
         ];
 
         $config = $processor->processConfiguration(
@@ -48,10 +48,10 @@ class PhpunitConfigurationTest extends \PHPUnit_Framework_TestCase
         }
 
         $config = [
-            'phpunit' => $config,
+            'phpspec' => $config,
         ];
 
-        $configuration = new PhpunitConfiguration();
+        $configuration = new PhpspecConfiguration();
         $processor     = new Processor();
 
         return $processor->processConfiguration(
@@ -74,13 +74,39 @@ class PhpunitConfigurationTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 [
-                    'timeout' => 'edfsfsdf'
+                    'quiet' => [],
                 ],
                 false,
             ],
             [
                 [
-                    'timeout' => 180
+                    'verbose' => [],
+                ],
+                false,
+            ],
+            [
+                [
+                    'config' => [],
+                ],
+                false,
+            ],
+            [
+                [
+                    'timeout' => 'edfsfsdf',
+                ],
+                false,
+            ],
+            [
+                [
+                    'timeout' => 180,
+                ],
+                true,
+            ],
+            [
+                [
+                    'timeout' => 180,
+                    'quiet'   => true,
+                    'verbose' => false,
                 ],
                 true,
             ],

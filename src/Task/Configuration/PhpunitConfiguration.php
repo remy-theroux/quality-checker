@@ -23,7 +23,7 @@ class PhpunitConfiguration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->integerNode('timeout')
-                    ->defaultValue(360)
+                    ->defaultValue(540)
                     ->min(0)
                 ->end()
             ->end();
