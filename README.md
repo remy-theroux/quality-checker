@@ -6,6 +6,7 @@ Supported tools are :
 - PHP code sniffer - [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer)
 - PHP mess detector - [PHPMD](http://http://phpmd.org/)
 - PHP unit - [PHPUNIT](https://phpunit.de/)
+- PHP spec - [PHPSPEC](http://phpspec.readthedocs.org/en/latest/)
 - ... many more are coming
 
 Installing
@@ -66,8 +67,12 @@ Quality checker is searching for .qualitychecker.yml at current location.
 $ ./vendor/bin/qualitychecker
 ```
 
+Contact
+--
+Feel free to contact us on github for improvment, bugs or simply to hug us.
+
 TODO
 --
 * Add logs during execution
-* Add PHPCPEC support
 * Add BEHAT support
+
