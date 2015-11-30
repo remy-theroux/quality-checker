@@ -39,23 +39,23 @@ class Phpcs extends AbstractTask
 
         $processBuilder->add('--colors');
 
-        if (!$config['show_warnings']) {
+        if (isset($config['show_warnings']) && !$config['show_warnings']) {
             $processBuilder->add('--warning-severity=0');
         }
 
-        if ($config['tab_width']) {
+        if (isset($config['tab_width'])) {
             $processBuilder->add('--tab-width=' . $config['tab_width']);
         }
 
-        if (count($config['sniffs'])) {
+        if (!empty($config['sniffs'])) {
             $processBuilder->add('--sniffs=' . implode(',', $config['sniffs']));
         }
 
-        if (count($config['ignore_patterns'])) {
+        if (!empty($config['ignore_patterns'])) {
             $processBuilder->add('--ignore=' . implode(',', $config['ignore_patterns']));
         }
 
-        $files = $this->config['paths'];
+        $files = $config['paths'];
         foreach ($files as $file) {
             $processBuilder->add($file);
         }
@@ -76,20 +76,5 @@ class Phpcs extends AbstractTask
         $output->writeln(['[PHPCS] <fg=green>Success</fg=green>', '']);
 
         return true;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDefaultConfiguration()
-    {
-        return [
-            'standard'        => 'PSR2',
-            'show_warnings'   => true,
-            'tab_width'       => 0,
-            'ignore_patterns' => [],
-            'sniffs'          => [],
-            'timeout'         => 180,
-        ];
     }
 }

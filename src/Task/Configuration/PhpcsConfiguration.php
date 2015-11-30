@@ -39,11 +39,10 @@ class PhpcsConfiguration implements ConfigurationInterface
                     ->defaultValue(false)
                 ->end()
                 ->integerNode('tab_width')
-                    ->defaultValue(null)
                     ->min(0)
                 ->end()
                 ->integerNode('timeout')
-                    ->defaultValue(360)
+                    ->defaultValue(540)
                     ->min(0)
                 ->end()
             ->end();

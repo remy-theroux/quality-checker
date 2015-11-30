@@ -13,6 +13,27 @@ use Symfony\Component\Config\Definition\Processor;
 class PhpunitConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Test default configuration
+     */
+    public function testDefaultConfiguration()
+    {
+        $configuration = new PhpunitConfiguration();
+        $processor     = new Processor();
+
+        $config = [
+            'phpunit' => [],
+        ];
+
+        $config = $processor->processConfiguration(
+            $configuration,
+            $config
+        );
+
+        $this->assertArrayHasKey('timeout', $config);
+        $this->assertEquals(540, $config['timeout']);
+    }
+
+    /**
      * @param array   $config  Config to validate
      * @param boolean $isValid Must config be valid
      *

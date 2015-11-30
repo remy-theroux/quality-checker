@@ -5,14 +5,14 @@ namespace QualityChecker\Task;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class Phpunit
+ * Class Phpspec
  *
  * @package QualityChecker\Task
  */
-class Phpunit extends AbstractTask
+class Phpspec extends AbstractTask
 {
     /** @const string */
-    const COMMAND_NAME = 'phpunit';
+    const COMMAND_NAME = 'phpspec';
 
     /**
      * Run task
@@ -23,12 +23,25 @@ class Phpunit extends AbstractTask
      */
     public function run(OutputInterface $output)
     {
-        $output->writeln('[PHPUNIT] Testing...');
+        $output->writeln('[PHPSPEC] Testing...');
 
         $config         = $this->getConfiguration();
         $commandPath    = $this->getCommandPath(self::COMMAND_NAME, $this->binDir);
         $processBuilder = $this->processBuilder;
         $processBuilder->setPrefix($commandPath);
+        $processBuilder->add('run');
+
+        if (!empty($config['config'])) {
+            $processBuilder->add('--config=' . $config['config']);
+        }
+
+        if (!empty($config['verbose'])) {
+            $processBuilder->add('--verbose');
+        }
+
+        if (!empty($config['quiet'])) {
+            $processBuilder->add('--quiet');
+        }
 
         $process = $processBuilder->getProcess();
         $process->enableOutput();
@@ -38,12 +51,12 @@ class Phpunit extends AbstractTask
         $output->writeln($process->getOutput());
 
         if (!$process->isSuccessful()) {
-            $output->writeln(['[PHPUNIT] <fg=red>Failed</fg=red>', '']);
+            $output->writeln(['[PHPSPEC] <fg=red>Failed</fg=red>', '']);
 
             return false;
         }
 
-        $output->writeln(['[PHPUNIT] <fg=green>Success</fg=green>', '']);
+        $output->writeln(['[PHPSPEC] <fg=green>Success</fg=green>', '']);
 
         return true;
     }

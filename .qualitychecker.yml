@@ -1,16 +1,25 @@
 parameters:
-  tasks: [phpcs,phpmd,phpunit]
+  tasks: [phpcs,phpmd,phpunit,phpspec]
 
   # PHPCS configuration
   phpcs:
     # Could be PEAR, PHPCS, PSR1, PSR2, Squiz, Zend or a directory with a ruleset './vendor/iadvize/php-convention/phpcs/Iadvize'
     standard: ./vendor/iadvize/php-convention/phpcs/Iadvize
     paths: [./src]
+
   # PHPMD configuration
   phpmd:
     format: text
     paths: [./src]
     rulesets: [codesize,controversial,design,naming]
+
   # PHPUNIT configuration
   phpunit:
-    timeout: 50
+    timeout: 60
+
+  # PHPSPEC configuration
+  phpspec:
+    config: .phpspec.yml
+    quiet: false
+    timeout: 60
+

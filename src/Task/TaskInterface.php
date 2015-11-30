@@ -19,11 +19,6 @@ interface TaskInterface
     public function getConfiguration();
 
     /**
-     * @return array
-     */
-    public function getDefaultConfiguration();
-
-    /**
      * @param OutputInterface $output Output
      *
      * @return boolean

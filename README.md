@@ -6,6 +6,7 @@ Supported tools are :
 - PHP code sniffer - [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer)
 - PHP mess detector - [PHPMD](http://http://phpmd.org/)
 - PHP unit - [PHPUNIT](https://phpunit.de/)
+- PHP spec - [PHPSPEC](http://phpspec.readthedocs.org/en/latest/)
 - ... many more are coming
 
 Installing
@@ -45,8 +46,15 @@ parameters:
     suffixes: [php]
     timeout: 180
     
-  # PHPUNIT configuration, only use phpunit.xml configuration
+  # PHPUNIT configuration, only use phpunit.xml configuration file
   phpunit:
+    timeout: 180
+    
+  # PHPSPEC configuration, only use a yml configuration file, file name can be configured
+  phpspec:
+    config: ./path/to/config/phpspec.yml (default to .phpspec.yml)
+    verbose: true
+    quiet: true
     timeout: 180
 ```
 
@@ -59,8 +67,12 @@ Quality checker is searching for .qualitychecker.yml at current location.
 $ ./vendor/bin/qualitychecker
 ```
 
+Contact
+--
+Feel free to contact us on github for improvment, bugs or simply to hug us.
+
 TODO
 --
 * Add logs during execution
-* Add PHPCPEC support
 * Add BEHAT support
+

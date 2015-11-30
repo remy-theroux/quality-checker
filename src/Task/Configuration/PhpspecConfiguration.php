@@ -6,11 +6,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
- * Class PhpunitConfiguration
+ * Class PhpspecConfiguration
  *
  * @package QualityChecker\Task\Configuration
  */
-class PhpunitConfiguration implements ConfigurationInterface
+class PhpspecConfiguration implements ConfigurationInterface
 {
     /**
      * @return TreeBuilder
@@ -18,7 +18,7 @@ class PhpunitConfiguration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('phpunit');
+        $rootNode    = $treeBuilder->root('phpspec');
 
         $rootNode
             ->children()
@@ -26,6 +26,9 @@ class PhpunitConfiguration implements ConfigurationInterface
                     ->defaultValue(540)
                     ->min(0)
                 ->end()
+                ->scalarNode('config')->end()
+                ->booleanNode('quiet')->end()
+                ->booleanNode('verbose')->end()
             ->end();
 
         return $treeBuilder;
