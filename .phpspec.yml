@@ -1,0 +1,4 @@
+suites:
+    quality_checker_suite:
+        namespace: QualityChecker
+        spec_prefix: spec

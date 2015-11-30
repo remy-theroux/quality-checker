@@ -32,7 +32,7 @@ class Phpspec extends AbstractTask
         $processBuilder->add('run');
 
         if (!empty($config['config'])) {
-            $processBuilder->add('--config ' . $config['config']);
+            $processBuilder->add('--config=' . $config['config']);
         }
 
         if (!empty($config['verbose'])) {

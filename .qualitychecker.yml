@@ -1,5 +1,5 @@
 parameters:
-  tasks: [phpspec]
+  tasks: [phpcs,phpmd,phpunit,phpspec]
 
   # PHPCS configuration
   phpcs:
@@ -15,7 +15,11 @@ parameters:
 
   # PHPUNIT configuration
   phpunit:
-    timeout: 50
+    timeout: 60
 
   # PHPSPEC configuration
   phpspec:
+    config: .phpspec.yml
+    quiet: false
+    timeout: 60
+
