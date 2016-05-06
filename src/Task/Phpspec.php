@@ -52,6 +52,7 @@ class Phpspec extends AbstractTask
 
         if (!$process->isSuccessful()) {
             $output->writeln(['[PHPSPEC] <fg=red>Failed</fg=red>', '']);
+            $output->writeln(['[PHPSPEC] ' . $process->getErrorOutput(), '']);
 
             return false;
         }

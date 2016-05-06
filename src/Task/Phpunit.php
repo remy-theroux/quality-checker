@@ -39,6 +39,7 @@ class Phpunit extends AbstractTask
 
         if (!$process->isSuccessful()) {
             $output->writeln(['[PHPUNIT] <fg=red>Failed</fg=red>', '']);
+            $output->writeln(['[PHPUNIT] ' . $process->getErrorOutput(), '']);
 
             return false;
         }

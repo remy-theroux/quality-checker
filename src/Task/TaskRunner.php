@@ -52,7 +52,11 @@ class TaskRunner
         $isSuccess = true;
 
         foreach ($this->tasks as $task) {
-            $isSuccess = $isSuccess && $task->run($output);
+            try {
+                $isSuccess = $isSuccess && $task->run($output);
+            } catch (\Exception $e) {
+                echo $e->getMessage();
+            }
         }
 
         return $isSuccess;

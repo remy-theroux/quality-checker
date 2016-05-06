@@ -68,6 +68,7 @@ class Phpmd extends AbstractTask
 
         if (!$process->isSuccessful()) {
             $output->writeln(['[PHPMD] <fg=red>Failed</fg=red>', '']);
+            $output->writeln(['[PHPMD] ' . $process->getErrorOutput(), '']);
 
             return false;
         }
