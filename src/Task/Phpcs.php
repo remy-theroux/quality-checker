@@ -69,6 +69,7 @@ class Phpcs extends AbstractTask
 
         if (!$process->isSuccessful()) {
             $output->writeln(['[PHPCS] <fg=red>Failed</fg=red>', '']);
+            $output->writeln(['[PHPCS] ' . $process->getErrorOutput(), '']);
 
             return false;
         }

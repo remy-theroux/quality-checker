@@ -24,6 +24,7 @@ class PhpmdTest extends \PHPUnit_Framework_TestCase
         $mockProcess = Mockery::mock('Symfony\Component\Process\Process');
         $mockProcess->shouldReceive('setTimeout')->with(180);
         $mockProcess->shouldReceive('enableOutput');
+        $mockProcess->shouldReceive('getErrorOutput');
         $mockProcess->shouldReceive('isSuccessful');
         $mockProcess->shouldReceive('getOutput');
         $mockProcess->shouldReceive('run');

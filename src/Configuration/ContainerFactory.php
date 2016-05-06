@@ -37,13 +37,13 @@ class ContainerFactory
         $currentDir     = getcwd();
         $configFilePath = $currentDir . DIRECTORY_SEPARATOR . self::CONFIG_FILE_NAME;
         $filesystem     = new Filesystem();
-        if ($filesystem->exists($configFilePath)) {
-            $loader->load($configFilePath);
-        } else {
+
+        if (!$filesystem->exists($configFilePath)) {
             $message = 'Can\'t find configuration file ' . self::CONFIG_FILE_NAME . ' in directory ' . $currentDir;
             throw new ConfigurationException($message);
         }
 
+        $loader->load($configFilePath);
         $container->compile();
 
         return $container;

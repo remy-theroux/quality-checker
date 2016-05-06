@@ -39,6 +39,11 @@
   "bin": [
     "bin/qualitychecker"
   ],
+  "scripts": {
+    "post-install-cmd": [
+      "./vendor/bin/phpcs --config-set installed_paths $PWD/vendor/escapestudios/symfony2-coding-standard"
+    ]
+  },
   "autoload": {
     "psr-4": {
       "QualityChecker\\": [
