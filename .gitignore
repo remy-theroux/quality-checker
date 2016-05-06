@@ -3,3 +3,4 @@ vendor/
 logs/*
 !logs/.gitkeep
 .idea
+*.iml
