@@ -27,7 +27,7 @@ services:
   phpunit:
     class: QualityChecker\Task\Phpunit
     arguments:
-      - phpmd: "@=parameter('phpunit') ? parameter('phpunit') : []"
+      - phpunit: "@=parameter('phpunit') ? parameter('phpunit') : []"
       - %bin_dir%
       - @process_builder=
     tags:
@@ -36,7 +36,7 @@ services:
   phpspec:
     class: QualityChecker\Task\Phpspec
     arguments:
-      - phpmd: "@=parameter('phpspec') ? parameter('phpspec') : []"
+      - phpspec: "@=parameter('phpspec') ? parameter('phpspec') : []"
       - %bin_dir%
       - @process_builder=
     tags:
