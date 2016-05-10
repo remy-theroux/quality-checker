@@ -12,8 +12,11 @@ Supported tools are :
 Installing
 --
 ```sh
-$ composer require remy-theroux/quality-checker
+$ composer require --dev remy-theroux/quality-checker
 ```
+
+You must require each tool you want to use in your own project.
+Binaries will be executed from your vendor/bin directory.
 
 Configuring
 --
